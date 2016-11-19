@@ -1,0 +1,5 @@
+*.csproj
+Library
+*.sln
+*.userprefs
+*.DS_Store
