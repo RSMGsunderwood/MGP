@@ -11,4 +11,12 @@ public class Player : MonoBehaviour {
 		Player4
 	};
 	public PlayerNumber playerNumber;
+
+	void Awake(){
+		InputHandler.ButtonPressed += this.ButtonWasHit;
+	}
+
+	public void ButtonWasHit(int player, InputHandler.Buttons button){
+		Debug.Log (player + " " + button);
+	}
 }
