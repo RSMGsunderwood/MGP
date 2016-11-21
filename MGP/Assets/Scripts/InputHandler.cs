@@ -2,15 +2,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !UNITY_EDITOR_OSX
 using XInputDotNetPure;
+#endif
 
 public class InputHandler : MonoBehaviour {
 
 	public static InputHandler instance;
-
+	#if !UNITY_EDITOR_OSX
 	GamePadState[] states = new GamePadState[4];
 	GamePadState[] prevState = new GamePadState[4];
-
+	#endif
 	public enum Buttons{
 		a,
 		b,
@@ -28,6 +30,7 @@ public class InputHandler : MonoBehaviour {
 	void Update()
 	{
 		for (int i = 0; i < 4; i++) {
+			#if !UNITY_EDITOR_OSX
 			PlayerIndex getIndex = (PlayerIndex)i;
 			GamePadState testState = GamePad.GetState (getIndex);
 			if (testState.IsConnected) {
@@ -46,6 +49,7 @@ public class InputHandler : MonoBehaviour {
 					InputHandler.ButtonPressed (i, InputHandler.Buttons.y);
 				}
 			} else { //Keyboard support lul
+			#endif
 				if (i == 0) {
 					if (Input.GetKeyDown ("a")) {
 						InputHandler.ButtonPressed (i, InputHandler.Buttons.x);
@@ -87,7 +91,9 @@ public class InputHandler : MonoBehaviour {
 						InputHandler.ButtonPressed (i, InputHandler.Buttons.y);
 					}
 				}
+			#if !UNITY_EDITOR_OSX
 			}
+			#endif
 		}
 	}
 }
