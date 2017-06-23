@@ -7,10 +7,13 @@ public class ScreenHandler : MonoBehaviour {
 
 	public GameObject[] screens;
 	public GameObject prevScreen;
+	public string prevScreenName;
+	public GameObject currentScreen;
+	public string currentScreenName;
 
 	void Awake(){
 		instance = this;
-		Instantiate (screens [0]);
+		CreateScreen ("titlescreen");
 	}
 
 	/// <summary>
@@ -20,6 +23,8 @@ public class ScreenHandler : MonoBehaviour {
 	/// <param name="destroyPrev">If set to <c>true</c>, then the previous screen will be destroyed</param>
 	public void CreateScreen(string screenName ="titlescreen", bool destroyPrev = true){
 		GameObject newScreen = null;
+
+
 		if (screenName.ToLower () == "titlescreen") {
 			newScreen = screens [0];
 		} else if (screenName.ToLower () == "menuscreen") {
@@ -30,10 +35,17 @@ public class ScreenHandler : MonoBehaviour {
 
 		newScreen = Instantiate (newScreen);
 
+		if (currentScreen != null) {
+			prevScreen = currentScreen;
+			prevScreenName = currentScreenName;
+		}
+
+		currentScreen = newScreen;
+		currentScreenName = screenName;
+
 		if (prevScreen != null && destroyPrev) {
 			GameObject.Destroy (prevScreen);
 		}
-		prevScreen = newScreen;
 
 	}
 

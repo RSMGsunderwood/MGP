@@ -1,7 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MainMenuScreen : BaseScreen {
+
+	public List<PlayerArea> playerSpaces;
+	public Image yellowButton;
+	public Text yellowText;
+	public ScrollRect menuScroll;
+
+	void Awake(){
+		for (int i = 0; i < 4; i++) {
+			if (GameHandler.instance.players [i].isVIP) {
+				playerSpaces [i].ToggleVIP (true);
+			}
+		}
+	}
+
+	void Update(){
+		
+	}
 
 	public void Enable(){
 		OnEnable ();

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class Player {
 
 	public string playerName;
 	public enum PlayerNumber{
@@ -11,5 +11,6 @@ public class Player : MonoBehaviour {
 		Player4
 	};
 	public PlayerNumber playerNumber;
+	public bool isVIP;
 
 }

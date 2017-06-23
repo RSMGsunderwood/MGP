@@ -29,6 +29,7 @@ public class InputHandler : MonoBehaviour {
 
 	void Update()
 	{
+		if(ButtonPressed!=null)
 		for (int i = 0; i < 4; i++) {
 			#if !UNITY_EDITOR_OSX
 			PlayerIndex getIndex = (PlayerIndex)i;
