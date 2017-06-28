@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class PlayerInputHandler : MonoBehaviour {
 
 	public List<Text> textOptions = new List<Text>();
-	public Transform textOptionsHolder;
+	public RectTransform textOptionsHolder;
 
+	void Awake(){
+		foreach (Transform child in textOptionsHolder) {
+			RectTransform temp = child.GetComponent<RectTransform> ();
+
+		}
+	}
 }
