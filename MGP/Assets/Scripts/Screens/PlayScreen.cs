@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayScreen : BaseScreen {
 
 	public List<PlayerArea> playerSpaces;
+	public List<PlayerInputHandler> playerInputHandlers;
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
@@ -54,8 +55,10 @@ public class PlayScreen : BaseScreen {
 		if (button == InputHandler.Buttons.y) {
 		}
 		if (button == InputHandler.Buttons.b) {
+			playerInputHandlers [0].ScrollTextRight ();
 		}
 		if (button == InputHandler.Buttons.x) {
+			playerInputHandlers [0].ScrollTextLeft ();
 		}
 		if (button == InputHandler.Buttons.a) {
 		}
