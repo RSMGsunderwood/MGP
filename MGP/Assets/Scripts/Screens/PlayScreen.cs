@@ -55,12 +55,13 @@ public class PlayScreen : BaseScreen {
 		if (button == InputHandler.Buttons.y) {
 		}
 		if (button == InputHandler.Buttons.b) {
-			playerInputHandlers [0].ScrollTextRight ();
-		}
-		if (button == InputHandler.Buttons.x) {
 			playerInputHandlers [0].ScrollTextLeft ();
 		}
+		if (button == InputHandler.Buttons.x) {
+			playerInputHandlers [0].ScrollTextRight ();
+		}
 		if (button == InputHandler.Buttons.a) {
+			playerInputHandlers [0].SelectText (player);
 		}
 	}
 }
