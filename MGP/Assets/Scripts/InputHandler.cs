@@ -30,7 +30,8 @@ public class InputHandler : MonoBehaviour {
 	void Update()
 	{
 		if(ButtonPressed!=null)
-		for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
+				
 			#if !UNITY_EDITOR_OSX
 			PlayerIndex getIndex = (PlayerIndex)i;
 			GamePadState testState = GamePad.GetState (getIndex);
@@ -50,6 +51,18 @@ public class InputHandler : MonoBehaviour {
 					InputHandler.ButtonPressed (i, InputHandler.Buttons.y);
 				}
 			} else { //Keyboard support lul
+			#else
+				if(i==0){
+				if(Input.GetKeyDown(KeyCode.JoystickButton16)){
+					InputHandler.ButtonPressed (i, InputHandler.Buttons.a);
+				}else if(Input.GetKeyDown(KeyCode.JoystickButton17)){
+					InputHandler.ButtonPressed (i, InputHandler.Buttons.b);
+				}else if(Input.GetKeyDown(KeyCode.JoystickButton18)){
+					InputHandler.ButtonPressed (i, InputHandler.Buttons.x);
+				}else if(Input.GetKeyDown(KeyCode.JoystickButton19)){
+					InputHandler.ButtonPressed (i, InputHandler.Buttons.y);
+				}
+				}
 			#endif
 				if (i == 0) {
 					if (Input.GetKeyDown ("a")) {

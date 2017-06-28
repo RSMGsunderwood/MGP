@@ -9,6 +9,9 @@ public class MainMenuScreen : BaseScreen {
 	public Image yellowButton;
 	public Text yellowText;
 	public ScrollRect menuScroll;
+	public Color selectedText, notSelectedText;
+	public Text[] menuTexts;
+	int selected = 1;
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
@@ -16,6 +19,12 @@ public class MainMenuScreen : BaseScreen {
 				playerSpaces [i].ToggleVIP (true);
 			}
 		}
+		menuTexts [1].color = selectedText;
+		InputHandler.ButtonPressed += this.ButtonWasHit;
+	}
+
+	void OnDestroy(){
+		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
 
 	void Update(){
@@ -46,5 +55,40 @@ public class MainMenuScreen : BaseScreen {
 	public override void OnDisable ()
 	{
 		gameObject.SetActive (false);
+	}
+
+	public void ButtonWasHit(int player, InputHandler.Buttons button){
+		if (button == InputHandler.Buttons.y) {
+			if (playerSpaces [player].isVIP) {
+				ScreenHandler.instance.CreateScreen ("titlescreen", true);
+			}
+		}
+		if (button == InputHandler.Buttons.b) {
+			if (playerSpaces [player].isVIP) {
+				if (selected < menuTexts.Length-1) {
+					menuTexts [selected].color = notSelectedText;
+					selected++;
+					menuTexts [selected].color = selectedText;
+					menuScroll.horizontalNormalizedPosition = (selected/(float)(menuTexts.Length-1));
+				}
+			}
+		}
+		if (button == InputHandler.Buttons.x) {
+			if (playerSpaces [player].isVIP) {
+				if (selected > 0) {
+					menuTexts [selected].color = notSelectedText;
+					selected--;
+					menuTexts [selected].color = selectedText;
+					menuScroll.horizontalNormalizedPosition = (selected/(float)(menuTexts.Length-1));
+				}
+			}
+		}
+		if (button == InputHandler.Buttons.a) {
+			if (playerSpaces [player].isVIP) {
+				if (selected == 1) {
+					ScreenHandler.instance.CreateScreen ("playscreen", true);
+				}
+			}
+		}
 	}
 }
