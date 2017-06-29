@@ -4,6 +4,7 @@ using System.Collections;
 public class Player {
 
 	public string playerName;
+	public Color playerColor;
 	public enum PlayerNumber{
 		Player1,
 		Player2,

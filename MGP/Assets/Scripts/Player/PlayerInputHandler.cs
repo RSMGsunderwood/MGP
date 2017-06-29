@@ -8,11 +8,11 @@ public class PlayerInputHandler : MonoBehaviour {
 	List<GameObject> textOptions = new List<GameObject>();
 	List<GameObject> colorOptions = new List<GameObject>();
 	public GameObject playerNameInputGO, playerColorGO;
-	public Text nameInput;
-	string playerName = "";
+	public Text nameInput, nameInColor;
+	string[] playerName = new string[] {"","","",""};
 	public RectTransform textOptionsHolder, colorOptionsHolder;
 	public Color selectedColor, normalColor;
-	GameObject selectedTextOption, selectedColorOption;
+	public GameObject selectedTextOption, selectedColorOption;
 	float textStartx = 0, textEndX = 0, colorStartx = 0, colorEndx = 0;
 
 	void Awake(){
@@ -28,81 +28,81 @@ public class PlayerInputHandler : MonoBehaviour {
 		selectedTextOption = textOptions [15];
 		textOptions[15].GetComponent<Text> ().color = selectedColor;
 		//Setup for color input infinite scrolling
-		tempPos = colorStartx = -140;
+		tempPos = colorStartx = -180;
 		foreach (Transform child in colorOptionsHolder) {
 			RectTransform temp = child.GetComponent<RectTransform> ();
 			colorOptions.Add (child.gameObject);
 			temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x + tempPos, temp.anchoredPosition.y);
-			tempPos += 40;
+			tempPos += 60;
 		}
-		colorEndx = tempPos - 40;
+		colorEndx = tempPos - 60;
+		selectedColorOption = colorOptions [3];
 		playerColorGO.SetActive (false);
 	}
 
 	public void ScrollTextLeft(){
-		//If we're in the name input area, scroll text items to the left
-		if (playerNameInputGO.activeInHierarchy) {
-			foreach (GameObject ob in textOptions) {
-				RectTransform temp = ob.GetComponent<RectTransform> ();
-				temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x - 20, temp.anchoredPosition.y);
+		ScrollText (false);
+	}
+
+	public void ScrollTextRight(){
+		ScrollText (true);
+	}
+
+	void ScrollText(bool right = true){
+		//Text scrolling variables
+		float obMove = -20;							//How far the scrollable item moves when it scrolls.
+		float whereObMoveTo = textEndX;				//Where the scrollable item will move to when it hits the edge.
+		int whichObMove = 0;						//Which scrollable item will be moved because it is scrolled off.
+		int obInsert = textOptions.Count - 1;		//Where to insert the scrollable item in the list after movement.
+		int middleSelect = 15;						//What scrollable item to select once movement is finished.
+		List<GameObject> options = textOptions;		//Which list we are moving around.
+		if (right) {
+			obMove = 20;
+			whereObMoveTo = textStartx;
+			whichObMove = options.Count - 1;
+			obInsert = 0;
+		}
+		//Color scrolling variables
+		if (playerColorGO.gameObject.activeInHierarchy) {
+			obMove = -60;
+			whereObMoveTo = colorEndx;
+			whichObMove = 0;
+			obInsert = colorOptions.Count - 1;
+			middleSelect = 3;
+			options = colorOptions;
+			if (right) {
+				obMove = 60;
+				whereObMoveTo = colorStartx;
+				whichObMove = options.Count - 1;
+				obInsert = 0;
+			}
+		}
+		//Scrolling logic
+		foreach (GameObject ob in options) {
+			RectTransform temp = ob.GetComponent<RectTransform> ();
+			temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x + obMove, temp.anchoredPosition.y);
+			if (playerNameInputGO.gameObject.activeInHierarchy) {
 				if (ob.GetComponent<Text> () != null) {
 					ob.GetComponent<Text> ().color = normalColor;
 				} else {
 					ob.GetComponent<Image> ().color = normalColor;
 				}
 			}
-			textOptions [0].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (textEndX, textOptions [0].GetComponent<RectTransform> ().anchoredPosition.y);
-			GameObject tempOb = textOptions [0];
-			textOptions.Remove (tempOb);
-			textOptions.Add (tempOb);
-			selectedTextOption = textOptions [15];
-			if (textOptions [15].GetComponent<Text> () != null) {
-				textOptions [15].GetComponent<Text> ().color = selectedColor;
-			} else {
-				textOptions [15].GetComponent<Image> ().color = selectedColor;
-			}
 		}
-		//If we're in the Color input area, scroll text items to the right
-		if (playerColorGO.activeInHierarchy) {
-			foreach (GameObject ob in colorOptions) {
-				RectTransform temp = ob.GetComponent<RectTransform> ();
-				temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x - 40, temp.anchoredPosition.y);
-				if (ob.GetComponent<Text> () != null) {
-					ob.GetComponent<Text> ().color = normalColor;
-				}
-			}
-			textOptions [0].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (textEndX, textOptions [0].GetComponent<RectTransform> ().anchoredPosition.y);
-			GameObject tempOb = textOptions [0];
-			textOptions.Remove (tempOb);
-			textOptions.Add (tempOb);
-			selectedTextOption = textOptions [15];
-			if (textOptions [15].GetComponent<Text> () != null) {
-				textOptions [15].GetComponent<Text> ().color = selectedColor;
+		options [whichObMove].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (whereObMoveTo, options [whichObMove].GetComponent<RectTransform> ().anchoredPosition.y);
+		GameObject tempOb = options [whichObMove];
+		options.Remove (tempOb);
+		options.Insert (obInsert, tempOb);
+		if(playerNameInputGO.gameObject.activeInHierarchy)
+			selectedTextOption = options [middleSelect];
+		if (playerColorGO.gameObject.activeInHierarchy)
+			selectedColorOption = options [middleSelect];
+		if (playerNameInputGO.gameObject.activeInHierarchy) {
+			if (options [middleSelect].GetComponent<Text> () != null) {
+				options [middleSelect].GetComponent<Text> ().color = selectedColor;
 			} else {
-				textOptions [15].GetComponent<Image> ().color = selectedColor;
+				options [middleSelect].GetComponent<Image> ().color = selectedColor;
 			}
-		}
-	}
-
-	public void ScrollTextRight(){
-		foreach (GameObject ob in textOptions) {
-			RectTransform temp = ob.GetComponent<RectTransform> ();
-			temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x + 20, temp.anchoredPosition.y);
-			if (ob.GetComponent<Text> () != null) {
-				ob.GetComponent<Text> ().color = normalColor;
-			} else {
-				ob.GetComponent<Image> ().color = normalColor;
-			}
-		}
-		textOptions [textOptions.Count-1].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (textStartx, textOptions [textOptions.Count-1].GetComponent<RectTransform> ().anchoredPosition.y);
-		GameObject tempOb = textOptions[textOptions.Count-1];
-		textOptions.Remove (tempOb);
-		textOptions.Insert (0, tempOb);
-		selectedTextOption = textOptions [15];
-		if (textOptions[15].GetComponent<Text> () != null) {
-			textOptions[15].GetComponent<Text> ().color = selectedColor;
-		} else {
-			textOptions[15].GetComponent<Image> ().color = selectedColor;
 		}
 	}
 
@@ -110,24 +110,27 @@ public class PlayerInputHandler : MonoBehaviour {
 		if (playerNameInputGO.gameObject.activeInHierarchy) {
 			if (selectedTextOption.GetComponent<Text> () != null && playerName.Length < 8) {
 				string temp = "";
-				playerName += selectedTextOption.GetComponent<Text> ().text;
+				playerName[player] += selectedTextOption.GetComponent<Text> ().text;
 				for (int i = 0; i < 8; i++) {
 					if (i > 0) {
 						temp += " ";
 					}
-					if (i < playerName.Length - 1) {
-						temp += playerName [i];
+					if (i < playerName[player].Length) {
+						temp += playerName[player][i];
 					} else {
 						temp += "_";
 					}
 				}
 				nameInput.text = temp;
-			} else {
-				GameHandler.instance.players [player].playerName = playerName;
+			} else if(selectedTextOption.GetComponent<Image>() != null) {
+				GameHandler.instance.players [player].playerName = playerName[player];
+				nameInColor.text = playerName [player] + "\n"+"Choose a Color";
 				playerNameInputGO.SetActive (false);
 				playerColorGO.SetActive (true);
 			}
 		}
-
+		if (playerColorGO.gameObject.activeInHierarchy) {
+			
+		}
 	}
 }
