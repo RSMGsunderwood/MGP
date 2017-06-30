@@ -12,6 +12,6 @@ public class Player {
 		Player4
 	};
 	public PlayerNumber playerNumber;
-	public bool isVIP;
-
+	public bool isVIP = false;
+	public bool isPlaying = false;
 }

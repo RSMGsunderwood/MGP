@@ -12,9 +12,18 @@ public class PlayScreen : BaseScreen {
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isVIP) {
 				playerSpaces [i].ToggleVIP (true);
+				playerSpaces [i].readyUpText.SetActive (false);
 			}
 		}
 		InputHandler.ButtonPressed += this.ButtonWasHit;
+	}
+
+	void Start(){
+		for (int i = 0; i < 4; i++) {
+			if (!GameHandler.instance.players [i].isVIP) {
+				playerInputHandlers [i].gameObject.SetActive (false);
+			}
+		}
 	}
 
 	void OnDestroy(){
@@ -55,13 +64,19 @@ public class PlayScreen : BaseScreen {
 		if (button == InputHandler.Buttons.y) {
 		}
 		if (button == InputHandler.Buttons.b) {
-			playerInputHandlers [0].ScrollTextLeft ();
+			playerInputHandlers [player].ScrollTextLeft ();
 		}
 		if (button == InputHandler.Buttons.x) {
-			playerInputHandlers [0].ScrollTextRight ();
+			playerInputHandlers [player].ScrollTextRight ();
 		}
 		if (button == InputHandler.Buttons.a) {
-			playerInputHandlers [0].SelectText (player);
+			if (GameHandler.instance.players [player].isPlaying) {
+				playerInputHandlers [player].SelectText (player, playerSpaces [player]);
+			} else {
+				playerInputHandlers [player].gameObject.SetActive (true);
+				GameHandler.instance.players [player].isPlaying = true;
+				playerSpaces [player].readyUpText.SetActive (false);
+			}
 		}
 	}
 }

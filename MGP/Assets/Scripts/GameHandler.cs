@@ -19,8 +19,9 @@ public class GameHandler : MonoBehaviour {
 	public void MakeVIP(int player){
 		for (int i = 0; i < 4; i++) {
 			players [i].isVIP = false;
-			if (i == player)
+			if (i == player) {
 				players [i].isVIP = true;
+			}
 		}
 	}
 }

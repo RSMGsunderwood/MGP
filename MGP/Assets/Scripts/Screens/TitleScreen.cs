@@ -2,18 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class TitleScreen : BaseScreen {
 
 	public List<PlayerArea> playerSpaces;
 	public Image greenButton;
 	public Image redButton;
-	public Text greenText;
-	public Text redText;
+	public TextMeshProUGUI greenText;
+	public TextMeshProUGUI redText;
 	bool vipSet = false;
 
 	void Awake(){
 		InputHandler.ButtonPressed += this.ButtonWasHit;
+		#if !UNITY_EDITOR
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+		#endif
 	}
 
 	void OnDestroy(){
@@ -54,6 +59,7 @@ public class TitleScreen : BaseScreen {
 				}
 			} else {
 				GameHandler.instance.MakeVIP (player);
+				GameHandler.instance.players [player].isPlaying = true;
 				vipSet = true;
 				playerSpaces [player].ToggleVIP (true);
 				redText.gameObject.SetActive (true);
@@ -64,6 +70,7 @@ public class TitleScreen : BaseScreen {
 		if (button == InputHandler.Buttons.b) {
 			if (playerSpaces [player].isVIP) {
 				GameHandler.instance.MakeVIP (5);
+				GameHandler.instance.players [player].isPlaying = false;
 				vipSet = false;
 				playerSpaces [player].ToggleVIP (false);
 				redText.gameObject.SetActive (false);

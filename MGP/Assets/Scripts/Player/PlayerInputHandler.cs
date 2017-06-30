@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInputHandler : MonoBehaviour {
 
 	List<GameObject> textOptions = new List<GameObject>();
 	List<GameObject> colorOptions = new List<GameObject>();
 	public GameObject playerNameInputGO, playerColorGO;
-	public Text nameInput, nameInColor;
+	public TextMeshProUGUI nameInput, nameInColor;
 	string[] playerName = new string[] {"","","",""};
 	public RectTransform textOptionsHolder, colorOptionsHolder;
 	public Color selectedColor, normalColor;
@@ -26,7 +27,7 @@ public class PlayerInputHandler : MonoBehaviour {
 		}
 		textEndX = tempPos -20;
 		selectedTextOption = textOptions [15];
-		textOptions[15].GetComponent<Text> ().color = selectedColor;
+		textOptions[15].GetComponent<TextMeshProUGUI> ().color = selectedColor;
 		//Setup for color input infinite scrolling
 		tempPos = colorStartx = -180;
 		foreach (Transform child in colorOptionsHolder) {
@@ -82,8 +83,8 @@ public class PlayerInputHandler : MonoBehaviour {
 			RectTransform temp = ob.GetComponent<RectTransform> ();
 			temp.anchoredPosition = new Vector2 (temp.anchoredPosition.x + obMove, temp.anchoredPosition.y);
 			if (playerNameInputGO.gameObject.activeInHierarchy) {
-				if (ob.GetComponent<Text> () != null) {
-					ob.GetComponent<Text> ().color = normalColor;
+				if (ob.GetComponent<TextMeshProUGUI> () != null) {
+					ob.GetComponent<TextMeshProUGUI> ().color = normalColor;
 				} else {
 					ob.GetComponent<Image> ().color = normalColor;
 				}
@@ -98,19 +99,19 @@ public class PlayerInputHandler : MonoBehaviour {
 		if (playerColorGO.gameObject.activeInHierarchy)
 			selectedColorOption = options [middleSelect];
 		if (playerNameInputGO.gameObject.activeInHierarchy) {
-			if (options [middleSelect].GetComponent<Text> () != null) {
-				options [middleSelect].GetComponent<Text> ().color = selectedColor;
+			if (options [middleSelect].GetComponent<TextMeshProUGUI> () != null) {
+				options [middleSelect].GetComponent<TextMeshProUGUI> ().color = selectedColor;
 			} else {
 				options [middleSelect].GetComponent<Image> ().color = selectedColor;
 			}
 		}
 	}
 
-	public void SelectText(int player){
+	public void SelectText(int player, PlayerArea playerArea){
 		if (playerNameInputGO.gameObject.activeInHierarchy) {
-			if (selectedTextOption.GetComponent<Text> () != null && playerName.Length < 8) {
+			if (selectedTextOption.GetComponent<TextMeshProUGUI> () != null && playerName.Length < 8) {
 				string temp = "";
-				playerName[player] += selectedTextOption.GetComponent<Text> ().text;
+				playerName[player] += selectedTextOption.GetComponent<TextMeshProUGUI> ().text;
 				for (int i = 0; i < 8; i++) {
 					if (i > 0) {
 						temp += " ";
@@ -124,13 +125,14 @@ public class PlayerInputHandler : MonoBehaviour {
 				nameInput.text = temp;
 			} else if(selectedTextOption.GetComponent<Image>() != null) {
 				GameHandler.instance.players [player].playerName = playerName[player];
+				playerArea.SetName (playerName [player]);
 				nameInColor.text = playerName [player] + "\n"+"Choose a Color";
 				playerNameInputGO.SetActive (false);
 				playerColorGO.SetActive (true);
 			}
-		}
-		if (playerColorGO.gameObject.activeInHierarchy) {
-			
+		}else if (playerColorGO.gameObject.activeInHierarchy) {
+			GameHandler.instance.players [player].playerColor = selectedColorOption.GetComponent<TextMeshProUGUI> ().color;
+			playerColorGO.SetActive (false);
 		}
 	}
 }

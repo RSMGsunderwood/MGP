@@ -2,15 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenuScreen : BaseScreen {
 
 	public List<PlayerArea> playerSpaces;
 	public Image yellowButton;
-	public Text yellowText;
+	public TextMeshProUGUI yellowText;
 	public ScrollRect menuScroll;
 	public Color selectedText, notSelectedText;
-	public Text[] menuTexts;
+	public TextMeshProUGUI[] menuTexts;
 	int selected = 1;
 
 	void Awake(){
