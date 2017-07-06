@@ -16,8 +16,11 @@ public class MainMenuScreen : BaseScreen {
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
-			if (GameHandler.instance.players [i].isVIP) {
-				playerSpaces [i].ToggleVIP (true);
+			if (GameHandler.instance.players [i].isPlaying) {
+				playerSpaces [i].TogglePlaying (true);
+				if (GameHandler.instance.players [i].isVIP) {
+					playerSpaces [i].ToggleVIP (true);
+				}
 			}
 		}
 		menuTexts [1].color = selectedText;
@@ -26,10 +29,6 @@ public class MainMenuScreen : BaseScreen {
 
 	void OnDestroy(){
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
-	}
-
-	void Update(){
-		
 	}
 
 	public void Enable(){

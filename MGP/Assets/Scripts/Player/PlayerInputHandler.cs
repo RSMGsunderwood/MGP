@@ -41,15 +41,15 @@ public class PlayerInputHandler : MonoBehaviour {
 		playerColorGO.SetActive (false);
 	}
 
-	public void ScrollTextLeft(){
-		ScrollText (false);
+	public void ScrollTextLeft(PlayerArea pArea){
+		ScrollText (false, pArea);
 	}
 
-	public void ScrollTextRight(){
-		ScrollText (true);
+	public void ScrollTextRight(PlayerArea pArea){
+		ScrollText (true, pArea);
 	}
 
-	void ScrollText(bool right = true){
+	void ScrollText(bool right, PlayerArea pArea){
 		//Text scrolling variables
 		float obMove = -20;							//How far the scrollable item moves when it scrolls.
 		float whereObMoveTo = textEndX;				//Where the scrollable item will move to when it hits the edge.
@@ -104,6 +104,8 @@ public class PlayerInputHandler : MonoBehaviour {
 			} else {
 				options [middleSelect].GetComponent<Image> ().color = selectedColor;
 			}
+		} else if (playerColorGO.gameObject.activeInHierarchy) {
+			pArea.SetColor(options[middleSelect].GetComponent<TextMeshProUGUI>().color);
 		}
 	}
 
@@ -129,6 +131,7 @@ public class PlayerInputHandler : MonoBehaviour {
 				nameInColor.text = playerName [player] + "\n"+"Choose a Color";
 				playerNameInputGO.SetActive (false);
 				playerColorGO.SetActive (true);
+				playerArea.SetColor(selectedColorOption.GetComponent<TextMeshProUGUI>().color);
 			}
 		}else if (playerColorGO.gameObject.activeInHierarchy) {
 			GameHandler.instance.players [player].playerColor = selectedColorOption.GetComponent<TextMeshProUGUI> ().color;

@@ -62,6 +62,7 @@ public class TitleScreen : BaseScreen {
 				GameHandler.instance.players [player].isPlaying = true;
 				vipSet = true;
 				playerSpaces [player].ToggleVIP (true);
+				playerSpaces [player].TogglePlaying (true);
 				redText.gameObject.SetActive (true);
 				greenText.text = "Start Game";
 				redButton.color = new Color (redButton.color.r, redButton.color.g, redButton.color.b, 1);
@@ -73,6 +74,7 @@ public class TitleScreen : BaseScreen {
 				GameHandler.instance.players [player].isPlaying = false;
 				vipSet = false;
 				playerSpaces [player].ToggleVIP (false);
+				playerSpaces [player].TogglePlaying (false);
 				redText.gameObject.SetActive (false);
 				greenText.text = "Press GREEN to become the VIP";
 				redButton.color = new Color (redButton.color.r, redButton.color.g, redButton.color.b, .5f);
