@@ -31,6 +31,8 @@ public class ScreenHandler : MonoBehaviour {
 			newScreen = screens [1];
 		} else if (screenName.ToLower () == "playscreen") {
 			newScreen = screens [2];
+		} else if (screenName.ToLower () == "minigamescreen") {
+			newScreen = screens [3];
 		}
 
 		newScreen = Instantiate (newScreen);

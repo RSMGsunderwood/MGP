@@ -5,6 +5,8 @@ public class GameHandler : MonoBehaviour {
 
 	public static GameHandler instance; //static instance for global reference
 	public Player[] players = new Player[4]; //The player data we'll use the entire game
+	public Minigames minigames;
+	[HideInInspector] public Minigame chosenGame;
 
 	void Awake(){
 		instance = this;
@@ -24,4 +26,18 @@ public class GameHandler : MonoBehaviour {
 			}
 		}
 	}
+
+	public void ChooseGame(int game, bool random){
+		if (random) {
+			chosenGame = PickRandomGame ();
+		} else {
+			chosenGame = minigames.games [game];
+		}
+	}
+
+	public Minigame PickRandomGame(){
+		int r = Random.Range (0, minigames.games.Count);
+		return minigames.games [r];
+	}
+
 }
