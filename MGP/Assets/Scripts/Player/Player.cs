@@ -14,4 +14,6 @@ public class Player {
 	public PlayerNumber playerNumber;
 	public bool isVIP = false;
 	public bool isPlaying = false;
+	public int pointScore;
+	public float timeScore;
 }

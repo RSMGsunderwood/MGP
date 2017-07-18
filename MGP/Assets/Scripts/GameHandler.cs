@@ -7,6 +7,7 @@ public class GameHandler : MonoBehaviour {
 	public Player[] players = new Player[4]; //The player data we'll use the entire game
 	public Minigames minigames;
 	[HideInInspector] public Minigame chosenGame;
+	[HideInInspector] public float timer;
 
 	void Awake(){
 		instance = this;

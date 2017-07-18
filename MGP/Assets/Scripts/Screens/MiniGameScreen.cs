@@ -13,6 +13,9 @@ public class MiniGameScreen : BaseScreen {
 	public GameObject descriptionPopup;
 	public TextMeshProUGUI descriptionText;
 	public TextMeshProUGUI countdownText;
+	public TextMeshProUGUI timerText;
+	public List<GameObject> buttons = new List<GameObject>();
+	public Slider timerUI;
 	bool gameStarted = false;
 
 	void Awake(){
@@ -107,6 +110,15 @@ public class MiniGameScreen : BaseScreen {
 		}
 		countdownText.text = "";
 		GameObject game = Instantiate (GameHandler.instance.chosenGame.mPrefab);
+		foreach (GameObject temp in buttons) {
+			temp.SetActive (false);
+		}
+		if (GameHandler.instance.chosenGame.usesTimer) {
+			GameHandler.instance.timer = GameHandler.instance.chosenGame.timer;
+			timerUI.gameObject.SetActive (GameHandler.instance.chosenGame.visibleTimer);
+			timerText.gameObject.SetActive (GameHandler.instance.chosenGame.visibleTimer);
+		}
+		StartCoroutine ("TimerRoutine");
 	}
 
 	IEnumerator TitleTween(){
@@ -119,5 +131,17 @@ public class MiniGameScreen : BaseScreen {
 			mRules.color = new Color (0, 0, 0, tween);
 			yield return null;
 		}
+	}
+
+	IEnumerator TimerRoutine(){
+		for (float i = GameHandler.instance.chosenGame.timer; i > 0; i -= Time.deltaTime) {
+			if (GameHandler.instance.chosenGame.visibleTimer) {
+				timerUI.value = i / GameHandler.instance.chosenGame.timer;
+				timerText.text = i.ToString ("F2");
+			}
+			GameHandler.instance.timer = GameHandler.instance.chosenGame.timer - i;
+			yield return null;
+		}
+		timerText.text = "00.00";
 	}
 }

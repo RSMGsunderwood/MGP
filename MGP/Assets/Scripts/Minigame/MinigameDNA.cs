@@ -50,33 +50,45 @@ public class MinigameDNA : MinigameMain {
 
 	public override void ButtonPress(int player, InputHandler.Buttons button){
 		bool passed = false;
-		//G
-		if (button == InputHandler.Buttons.y) {
-			if (playString[pProgress [player]].ToString() == "G") {
-				passed = true;
+		if (pIndicators [player].gameObject.activeInHierarchy) {
+			//G
+			if (button == InputHandler.Buttons.y) {
+				if (playString [pProgress [player]].ToString () == "G") {
+					passed = true;
+				}
 			}
-		}
-		//C
-		if (button == InputHandler.Buttons.b) {
-			if (playString[pProgress [player]].ToString() == "C") {
-				passed = true;
+			//C
+			if (button == InputHandler.Buttons.b) {
+				if (playString [pProgress [player]].ToString () == "C") {
+					passed = true;
+				}
 			}
-		}
-		//A
-		if (button == InputHandler.Buttons.x) {
-			if (playString[pProgress [player]].ToString() == "A") {
-				passed = true;
+			//A
+			if (button == InputHandler.Buttons.x) {
+				if (playString [pProgress [player]].ToString () == "A") {
+					passed = true;
+				}
 			}
-		}
-		//T
-		if (button == InputHandler.Buttons.a) {
-			if (playString[pProgress [player]].ToString() == "T") {
-				passed = true;
+			//T
+			if (button == InputHandler.Buttons.a) {
+				if (playString [pProgress [player]].ToString () == "T") {
+					passed = true;
+				}
 			}
-		}
-		if (passed) {
-			pProgress [player]++;
-			pIndicators [player].anchoredPosition = new Vector2(dnaString [pProgress[player]].GetComponent<RectTransform>().anchoredPosition.x, dnaString [pProgress[player]].GetComponent<RectTransform>().anchoredPosition.y -15-(2*player) );
+			if (passed) {
+				pProgress [player]++;
+				GameHandler.instance.players [player].pointScore++;
+				if (pProgress [player] + 1 < playString.Length) {
+					pIndicators [player].anchoredPosition = new Vector2 (dnaString [pProgress [player]].GetComponent<RectTransform> ().anchoredPosition.x, dnaString [pProgress [player]].GetComponent<RectTransform> ().anchoredPosition.y - 15 - (2 * player));
+				} else {
+					pIndicators [player].gameObject.SetActive (false);
+					GameHandler.instance.players [player].timeScore = GameHandler.instance.chosenGame.timer - GameHandler.instance.timer;
+				}
+			} else {
+				pIndicators [player].gameObject.SetActive (false);
+				GameHandler.instance.players [player].pointScore = 0;
+				GameHandler.instance.players [player].timeScore = 00.00f;
+			}
 		}
 	}
 }
