@@ -6,16 +6,17 @@ using TMPro;
 
 public class PlayerInputHandler : MonoBehaviour {
 
-	List<GameObject> textOptions = new List<GameObject>();
-	List<GameObject> colorOptions = new List<GameObject>();
-	public GameObject playerNameInputGO, playerColorGO;
-	public TextMeshProUGUI nameInput, nameInColor;
-	string[] playerName = new string[] {"","","",""};
-	public RectTransform textOptionsHolder, colorOptionsHolder;
-	public Color selectedColor, normalColor;
-	public GameObject selectedTextOption, selectedColorOption;
-	float textStartx = 0, textEndX = 0, colorStartx = 0, colorEndx = 0;
+	List<GameObject> textOptions = new List<GameObject>();					//All the options the player can cycle through for text settings
+	List<GameObject> colorOptions = new List<GameObject>();					//All the options the player can cycle through for color settings
+	public GameObject playerNameInputGO, playerColorGO;						//Holders for text options and color options
+	public TextMeshProUGUI nameInput, nameInColor;							//Name text shown while inputting name and choosing color
+	string[] playerName = new string[] {"","","",""};						//Player names
+	public RectTransform textOptionsHolder, colorOptionsHolder;				//Transform holding all options so they can be set easily
+	public Color selectedColor, normalColor;								//Color used for selected and normal options
+	public GameObject selectedTextOption, selectedColorOption;				//What the player is currently selecting for text and color
+	float textStartx = 0, textEndX = 0, colorStartx = 0, colorEndx = 0;		//Variables we'll use to dictate beginning and end transform points for inifinite scrolling
 
+	//Initializes text/color options
 	void Awake(){
 		//Setup for text input infinite scrolling
 		float tempPos = textStartx= -300;
@@ -41,14 +42,21 @@ public class PlayerInputHandler : MonoBehaviour {
 		playerColorGO.SetActive (false);
 	}
 
+	//Scrolls text to the left
 	public void ScrollTextLeft(PlayerArea pArea){
 		ScrollText (false, pArea);
 	}
 
+	//Scrolls text to the right
 	public void ScrollTextRight(PlayerArea pArea){
 		ScrollText (true, pArea);
 	}
 
+	/// <summary>
+	/// Universal void used for scrolling options (left and right currently)
+	/// </summary>
+	/// <param name="right">If set true, scrolls to the right</param>
+	/// <param name="pArea">Which player area is controlling this input</param>
 	void ScrollText(bool right, PlayerArea pArea){
 		//Text scrolling variables
 		float obMove = -20;							//How far the scrollable item moves when it scrolls.
@@ -109,9 +117,17 @@ public class PlayerInputHandler : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Player accepts whatever option they currently have selected
+	/// </summary>
+	/// <param name="player">Which number player is this</param>
+	/// <param name="playerArea">Which player area is this</param>
 	public void SelectText(int player, PlayerArea playerArea){
+		//If the name input is active, look at what was selected
+		//If a text object was the selection, they are entering their name.  Only goes up to 8 characters
+		//If an image was selected, the player chose to finish their name.
 		if (playerNameInputGO.gameObject.activeInHierarchy) {
-			if (selectedTextOption.GetComponent<TextMeshProUGUI> () != null && playerName.Length < 8) {
+			if (selectedTextOption.GetComponent<TextMeshProUGUI> () != null && playerName[player].Length < 8) {
 				string temp = "";
 				playerName[player] += selectedTextOption.GetComponent<TextMeshProUGUI> ().text;
 				for (int i = 0; i < 8; i++) {
@@ -133,6 +149,8 @@ public class PlayerInputHandler : MonoBehaviour {
 				playerColorGO.SetActive (true);
 				playerArea.SetColor(selectedColorOption.GetComponent<TextMeshProUGUI>().color);
 			}
+		//If the color input is active, they are choosing a color.
+		//Any input is accepted as final input
 		}else if (playerColorGO.gameObject.activeInHierarchy) {
 			GameHandler.instance.players [player].playerColor = selectedColorOption.GetComponent<TextMeshProUGUI> ().color;
 			playerColorGO.SetActive (false);

@@ -12,15 +12,18 @@ public class TitleScreen : BaseScreen {
 	public TextMeshProUGUI greenText;
 	public TextMeshProUGUI redText;
 	bool vipSet = false;
-
+	//Subscribes to button press event and locks cursor if this isn't in editor
 	void Awake(){
 		InputHandler.ButtonPressed += this.ButtonWasHit;
 		#if !UNITY_EDITOR
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		#endif
+		for (int i = 0; i < 4; i++) {
+			GameHandler.instance.players [i].isPlaying = false;
+		}
 	}
-
+	//Unsubscribes from button event on destroy
 	void OnDestroy(){
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
@@ -37,7 +40,7 @@ public class TitleScreen : BaseScreen {
 	{
 
 	}
-
+	//Actives screen on enable
 	public override void OnEnable()
 	{
 		gameObject.SetActive (true);
@@ -45,13 +48,14 @@ public class TitleScreen : BaseScreen {
 			currentScreen.OnDisable();
 		currentScreen = this;
 	}
-
+	//Deactivates screen on disasable
 	public override void OnDisable ()
 	{
 		gameObject.SetActive (false);
 	}
-
+	//Button input handler
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
+		//Goes to menu if VIP presses A.  Makes player VIP if none have joined yet.
 		if (button == InputHandler.Buttons.a) {
 			if (vipSet) {
 				if (playerSpaces [player].isVIP) {
@@ -68,6 +72,7 @@ public class TitleScreen : BaseScreen {
 				redButton.color = new Color (redButton.color.r, redButton.color.g, redButton.color.b, 1);
 			}
 		}
+		//Revokes VIP if VIP presses b
 		if (button == InputHandler.Buttons.b) {
 			if (playerSpaces [player].isVIP) {
 				GameHandler.instance.MakeVIP (5);

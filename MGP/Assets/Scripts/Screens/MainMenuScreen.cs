@@ -6,14 +6,14 @@ using TMPro;
 
 public class MainMenuScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;
-	public Image yellowButton;
-	public TextMeshProUGUI yellowText;
-	public ScrollRect menuScroll;
-	public Color selectedText, notSelectedText;
-	public TextMeshProUGUI[] menuTexts;
-	int selected = 1;
-
+	public List<PlayerArea> playerSpaces;				//Reference to player spaces
+	public Image yellowButton;							//Reference to yellow button
+	public TextMeshProUGUI yellowText;					//Reference to yellow button text
+	public ScrollRect menuScroll;						//Reference to the scrolling menu
+	public Color selectedText, notSelectedText;			//Colors used for selected and not select text
+	public TextMeshProUGUI[] menuTexts;					//Reference to texts in the menu
+	int selected = 1;									//Index of menu selection
+	//Initializes player spaces, menu selection, and button event subscription
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
@@ -26,7 +26,7 @@ public class MainMenuScreen : BaseScreen {
 		menuTexts [1].color = selectedText;
 		InputHandler.ButtonPressed += this.ButtonWasHit;
 	}
-
+	//Unsubscribes from button pressed when destroyed
 	void OnDestroy(){
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
@@ -43,7 +43,7 @@ public class MainMenuScreen : BaseScreen {
 	{
 		
 	}
-
+	//When enabled, set as current
 	public override void OnEnable()
 	{
 		gameObject.SetActive (true);
@@ -51,18 +51,20 @@ public class MainMenuScreen : BaseScreen {
 			currentScreen.OnDisable();
 		currentScreen = this;
 	}
-
+	//Sets as inactive on disable
 	public override void OnDisable ()
 	{
 		gameObject.SetActive (false);
 	}
-
+	//Button input handler
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
+		//Goes back to title screen
 		if (button == InputHandler.Buttons.y) {
 			if (playerSpaces [player].isVIP) {
 				ScreenHandler.instance.CreateScreen ("titlescreen", true);
 			}
 		}
+		//Lets VIP move meenu
 		if (button == InputHandler.Buttons.b) {
 			if (playerSpaces [player].isVIP) {
 				if (selected < menuTexts.Length-1) {
@@ -83,6 +85,7 @@ public class MainMenuScreen : BaseScreen {
 				}
 			}
 		}
+		//Lets VIP make menu selection
 		if (button == InputHandler.Buttons.a) {
 			if (playerSpaces [player].isVIP) {
 				if (selected == 1) {

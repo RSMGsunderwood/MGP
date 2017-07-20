@@ -6,15 +6,16 @@ using TMPro;
 
 public class GameResultsScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;
-	public TextMeshProUGUI titleText;
-	public List<GameObject> playerResults;
-	public List<TextMeshProUGUI> playerScores;
-	public List<TextMeshProUGUI> playerTimes;
-	public TextMeshProUGUI greenBText;
-	public TextMeshProUGUI winningPlayer;
+	public List<PlayerArea> playerSpaces;			//Reference for player spaces
+	public TextMeshProUGUI titleText;				//Reference to title text
+	public List<GameObject> playerResults;			//Reference to player result holders
+	public List<TextMeshProUGUI> playerScores;		//Reference to player score texts
+	public List<TextMeshProUGUI> playerTimes;		//Reference to player time texts
+	public TextMeshProUGUI greenBText;				//Reference to green button text
+	public TextMeshProUGUI winningPlayer;			//Reference to winning player texts
 	bool resultsDone = false;
 
+	//Initializes player area and start result coroutine
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
@@ -31,7 +32,7 @@ public class GameResultsScreen : BaseScreen {
 		StartCoroutine ("ResultsDisplay");
 		InputHandler.ButtonPressed += this.ButtonWasHit;
 	}
-
+	//Unsubscribes from button press event when destroyed
 	void OnDestroy(){
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
@@ -48,7 +49,7 @@ public class GameResultsScreen : BaseScreen {
 	{
 
 	}
-
+	//When enabled, set as current
 	public override void OnEnable()
 	{
 		gameObject.SetActive (true);
@@ -56,12 +57,12 @@ public class GameResultsScreen : BaseScreen {
 			currentScreen.OnDisable();
 		currentScreen = this;
 	}
-
+	//Sets as inactive on disable
 	public override void OnDisable ()
 	{
 		gameObject.SetActive (false);
 	}
-
+	//Button input handler
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
 		if (button == InputHandler.Buttons.y) {
 		}
@@ -70,6 +71,7 @@ public class GameResultsScreen : BaseScreen {
 		if (button == InputHandler.Buttons.x) {
 		}
 		if (button == InputHandler.Buttons.a) {
+			//Skips to end of results if those are still going.  Otherwise shoots players back to play menu
 			if (!resultsDone) {
 				SkipResultsDisplay ();
 			} else {
@@ -77,7 +79,7 @@ public class GameResultsScreen : BaseScreen {
 			}
 		}
 	}
-
+	//Coroutine for displaying results.  Goes through player scores then announces winner
 	IEnumerator ResultsDisplay(){
 		yield return new WaitForSeconds (3.0f);
 		titleText.text = "Results:";
@@ -92,7 +94,7 @@ public class GameResultsScreen : BaseScreen {
 		}
 		FinishResults ();
 	}
-
+	//Stops the result display coroutine and displays all the information instantly
 	public void SkipResultsDisplay(){
 		StopCoroutine ("ResultsDisplay");
 		titleText.text = "Results:";
@@ -105,7 +107,7 @@ public class GameResultsScreen : BaseScreen {
 		}
 		FinishResults ();
 	}
-
+	//Shows what player wins or if no one wins.  Then changes "A" button to going back to the play menu
 	void FinishResults(){
 		resultsDone = true;
 		if (GameHandler.instance.winningPlayer != null) {

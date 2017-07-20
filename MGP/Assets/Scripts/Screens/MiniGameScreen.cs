@@ -6,18 +6,18 @@ using TMPro;
 
 public class MiniGameScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;
-	public RectTransform textTrans;
-	public TextMeshProUGUI mName;
-	public TextMeshProUGUI mRules;
-	public GameObject descriptionPopup;
-	public TextMeshProUGUI descriptionText;
-	public TextMeshProUGUI countdownText;
-	public TextMeshProUGUI timerText;
-	public List<GameObject> buttons = new List<GameObject>();
-	public Slider timerUI;
-	bool gameStarted = false;
-
+	public List<PlayerArea> playerSpaces;							//Reference for player spaces
+	public RectTransform textTrans;									//Reference to text which animates early
+	public TextMeshProUGUI mName;									//Reference to minigame title text
+	public TextMeshProUGUI mRules;									//Reference to minigame rules text
+	public GameObject descriptionPopup;								//Reference to description popup gameobject
+	public TextMeshProUGUI descriptionText;							//Reference to minigame description text
+	public TextMeshProUGUI countdownText;							//Reference to countdown text
+	public TextMeshProUGUI timerText;								//Reference to minigame timer text
+	public List<GameObject> buttons = new List<GameObject>();		//Reference to button gameobject
+	public Slider timerUI;											//Reference to minigame timer slider
+	bool gameStarted = false;										//Bool that switches when minigame begins
+	//Initializes player spaces and pulls minigame metadata from the metadata object
 	void Awake(){
 		StartCoroutine ("TitleTween");
 		for (int i = 0; i < 4; i++) {
@@ -43,7 +43,7 @@ public class MiniGameScreen : BaseScreen {
 		descriptionText.text = temp;
 		InputHandler.ButtonPressed += this.ButtonWasHit;
 	}
-
+	//Unsubscribes from button pressed when destroyed
 	void OnDestroy(){
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
@@ -60,7 +60,7 @@ public class MiniGameScreen : BaseScreen {
 	{
 
 	}
-
+	//When enabled, set as current
 	public override void OnEnable()
 	{
 		gameObject.SetActive (true);
@@ -68,13 +68,14 @@ public class MiniGameScreen : BaseScreen {
 			currentScreen.OnDisable();
 		currentScreen = this;
 	}
-
+	//Sets as inactive on disable
 	public override void OnDisable ()
 	{
 		gameObject.SetActive (false);
 	}
-
+	//Button input handler
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
+		//Hides popup if any button is pressed while it's active
 		if (descriptionPopup.activeInHierarchy) {
 			if (GameHandler.instance.players [player].isVIP && !gameStarted) {
 				descriptionPopup.SetActive (false);
@@ -84,11 +85,13 @@ public class MiniGameScreen : BaseScreen {
 			}
 			if (button == InputHandler.Buttons.b) {
 			}
+			//VIP can show description popup
 			if (button == InputHandler.Buttons.x) {
 				if (GameHandler.instance.players [player].isVIP && !gameStarted) {
 					descriptionPopup.SetActive (true);
 				}
 			}
+			//VIP can start game
 			if (button == InputHandler.Buttons.a) {
 				if (GameHandler.instance.players [player].isVIP && !gameStarted) {
 					gameStarted = true;
@@ -98,7 +101,7 @@ public class MiniGameScreen : BaseScreen {
 			}
 		}
 	}
-
+	//Countdown coroutine.  Starts game after and shows timer if metadata says it should.
 	IEnumerator CountDownStart(){
 		for (float x = 3; x > -1; x--) {
 			for (float i = 0; i < 1; i += Time.deltaTime) {
@@ -122,7 +125,7 @@ public class MiniGameScreen : BaseScreen {
 			StartCoroutine ("TimerRoutine");
 		}
 	}
-
+	//Animates the title to show rules
 	IEnumerator TitleTween(){
 		yield return new WaitForSeconds (5.0f);
 		float h1 = textTrans.anchoredPosition.y + 65;
@@ -134,7 +137,7 @@ public class MiniGameScreen : BaseScreen {
 			yield return null;
 		}
 	}
-
+	//Timer runs while minigame is active
 	IEnumerator TimerRoutine(){
 		for (float i = GameHandler.instance.chosenGame.timer; i > 0; i -= Time.deltaTime) {
 			if (GameHandler.instance.chosenGame.visibleTimer) {
