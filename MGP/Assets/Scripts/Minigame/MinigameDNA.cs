@@ -11,6 +11,7 @@ public class MinigameDNA : MinigameMain {
 	List<TextMeshProUGUI> dnaString = new List<TextMeshProUGUI>();
 	string playString;
 	List<int> pProgress = new List<int>();
+	int playersFinished=0;
 
 	void Awake(){
 		playString = "";
@@ -21,7 +22,12 @@ public class MinigameDNA : MinigameMain {
 			rChoices.Add (i);
 			choices.Add (0);
 			pProgress.Add (0);
-			pIndicators [i].GetComponent<Image> ().color = GameHandler.instance.players [i].playerColor;
+			if (GameHandler.instance.players [i].isPlaying) {
+				pIndicators [i].GetComponent<Image> ().color = GameHandler.instance.players [i].playerColor;
+				pIndicators [i].gameObject.SetActive (true);
+			} else {
+				playersFinished++;
+			}
 		}
 		for (int i = 0; i < 20; i++) {
 			dnaString.Add(textHolder.GetChild(i*2).GetComponent<TextMeshProUGUI>());
@@ -32,8 +38,8 @@ public class MinigameDNA : MinigameMain {
 			dnaString [playString.Length - 1].text = playString [playString.Length - 1].ToString();
 			choices [m]++;
 			if (choices [m] == 5) {
-				rChoices.Remove (m);
-				choices.Remove (m);
+				rChoices.RemoveAt (m);
+				choices.RemoveAt (m);
 			}
 		}
 		InputHandler.ButtonPressed += this.ButtonPress;
@@ -83,11 +89,17 @@ public class MinigameDNA : MinigameMain {
 				} else {
 					pIndicators [player].gameObject.SetActive (false);
 					GameHandler.instance.players [player].timeScore = GameHandler.instance.chosenGame.timer - GameHandler.instance.timer;
+					playersFinished++;
 				}
 			} else {
 				pIndicators [player].gameObject.SetActive (false);
 				GameHandler.instance.players [player].pointScore = 0;
 				GameHandler.instance.players [player].timeScore = 00.00f;
+				playersFinished++;
+			}
+			if (playersFinished == 4) {
+				GameHandler.instance.CalculateWinner ();
+				ScreenHandler.instance.CreateScreen ("resultsscreen", true);
 			}
 		}
 	}

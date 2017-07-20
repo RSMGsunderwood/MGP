@@ -11,7 +11,7 @@ public class ScreenHandler : MonoBehaviour {
 	public GameObject currentScreen;
 	public string currentScreenName;
 
-	void Awake(){
+	void Start(){
 		instance = this;
 		CreateScreen ("titlescreen");
 	}
@@ -33,6 +33,8 @@ public class ScreenHandler : MonoBehaviour {
 			newScreen = screens [2];
 		} else if (screenName.ToLower () == "minigamescreen") {
 			newScreen = screens [3];
+		} else if (screenName.ToLower () == "resultsscreen") {
+			newScreen = screens [4];
 		}
 
 		newScreen = Instantiate (newScreen);
@@ -47,6 +49,10 @@ public class ScreenHandler : MonoBehaviour {
 
 		if (prevScreen != null && destroyPrev) {
 			GameObject.Destroy (prevScreen);
+		}
+
+		if (GameHandler.instance.chosenGameGO != null) {
+			GameObject.Destroy (GameHandler.instance.chosenGameGO);
 		}
 
 	}

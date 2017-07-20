@@ -21,6 +21,8 @@ public class MiniGameScreen : BaseScreen {
 	void Awake(){
 		StartCoroutine ("TitleTween");
 		for (int i = 0; i < 4; i++) {
+			GameHandler.instance.players [i].pointScore = 0;
+			GameHandler.instance.players [i].timeScore = 00.00f;
 			if (GameHandler.instance.players [i].isPlaying) {
 				playerSpaces [i].TogglePlaying (true);
 				if (GameHandler.instance.players [i].isVIP) {
@@ -109,7 +111,7 @@ public class MiniGameScreen : BaseScreen {
 			}
 		}
 		countdownText.text = "";
-		GameObject game = Instantiate (GameHandler.instance.chosenGame.mPrefab);
+		GameHandler.instance.chosenGameGO = Instantiate (GameHandler.instance.chosenGame.mPrefab);
 		foreach (GameObject temp in buttons) {
 			temp.SetActive (false);
 		}
@@ -117,8 +119,8 @@ public class MiniGameScreen : BaseScreen {
 			GameHandler.instance.timer = GameHandler.instance.chosenGame.timer;
 			timerUI.gameObject.SetActive (GameHandler.instance.chosenGame.visibleTimer);
 			timerText.gameObject.SetActive (GameHandler.instance.chosenGame.visibleTimer);
+			StartCoroutine ("TimerRoutine");
 		}
-		StartCoroutine ("TimerRoutine");
 	}
 
 	IEnumerator TitleTween(){
@@ -143,5 +145,7 @@ public class MiniGameScreen : BaseScreen {
 			yield return null;
 		}
 		timerText.text = "00.00";
+		GameHandler.instance.CalculateWinner ();
+		ScreenHandler.instance.CreateScreen ("resultsscreen", true);
 	}
 }

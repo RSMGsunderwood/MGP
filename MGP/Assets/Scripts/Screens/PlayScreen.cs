@@ -26,7 +26,7 @@ public class PlayScreen : BaseScreen {
 
 	void Start(){
 		for (int i = 0; i < 4; i++) {
-			if (!GameHandler.instance.players [i].isVIP) {
+			if (!GameHandler.instance.players [i].isPlaying) {
 				playerInputHandlers [i].gameObject.SetActive (false);
 			}
 		}
@@ -64,6 +64,9 @@ public class PlayScreen : BaseScreen {
 
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
 		if (button == InputHandler.Buttons.y) {
+			if (playerSpaces [player].isVIP) {
+				ScreenHandler.instance.CreateScreen ("menuscreen", true);
+			}
 		}
 		if (button == InputHandler.Buttons.b) {
 			playerInputHandlers [player].ScrollTextLeft (playerSpaces [player]);
