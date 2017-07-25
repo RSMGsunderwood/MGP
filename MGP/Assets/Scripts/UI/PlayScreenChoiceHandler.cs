@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerInputHandler : MonoBehaviour {
+public class PlayScreenChoiceHandler : MonoBehaviour {
 
 	List<GameObject> textOptions = new List<GameObject>();					//All the options the player can cycle through for text settings
 	List<GameObject> colorOptions = new List<GameObject>();					//All the options the player can cycle through for color settings

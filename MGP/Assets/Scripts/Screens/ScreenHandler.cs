@@ -36,6 +36,8 @@ public class ScreenHandler : MonoBehaviour {
 			newScreen = screens [3];
 		} else if (screenName.ToLower () == "resultsscreen") {
 			newScreen = screens [4];
+		} else if (screenName.ToLower () == "rulesscreen") {
+			newScreen = screens [5];
 		}
 
 		newScreen = Instantiate (newScreen);

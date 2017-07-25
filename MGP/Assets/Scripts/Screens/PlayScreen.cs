@@ -7,7 +7,7 @@ using TMPro;
 public class PlayScreen : BaseScreen {
 
 	public List<PlayerArea> playerSpaces;
-	public List<PlayerInputHandler> playerInputHandlers;
+	public List<PlayScreenChoiceHandler> playerInputHandlers;
 	int playersReady=0, activePlayers=0;
 
 	void Awake(){
