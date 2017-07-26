@@ -6,7 +6,6 @@ using TMPro;
 
 public class MainMenuScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;				//Reference to player spaces
 	public MenuScreenChoiceHandler menuInputHandler;	//Reference to menu interface
 	public Image yellowButton;							//Reference to yellow button
 	public TextMeshProUGUI yellowText;					//Reference to yellow button text
@@ -14,9 +13,9 @@ public class MainMenuScreen : BaseScreen {
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
-				playerSpaces [i].TogglePlaying (true);
+				GameHandler.instance.playerSpaces [i].TogglePlaying (true, false);
 				if (GameHandler.instance.players [i].isVIP) {
-					playerSpaces [i].ToggleVIP (true);
+					GameHandler.instance.playerSpaces [i].ToggleVIP (true);
 				}
 			}
 		}
@@ -56,24 +55,24 @@ public class MainMenuScreen : BaseScreen {
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
 		//Goes back to title screen
 		if (button == InputHandler.Buttons.y) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				ScreenHandler.instance.CreateScreen ("titlescreen", true);
 			}
 		}
 		//Lets VIP move meenu
 		if (button == InputHandler.Buttons.b) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				menuInputHandler.ScrollTextLeft ();
 			}
 		}
 		if (button == InputHandler.Buttons.x) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				menuInputHandler.ScrollTextRight ();
 			}
 		}
 		//Lets VIP make menu selection
 		if (button == InputHandler.Buttons.a) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				menuInputHandler.SelectText ();
 			}
 		}

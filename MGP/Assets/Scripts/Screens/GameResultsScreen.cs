@@ -6,7 +6,6 @@ using TMPro;
 
 public class GameResultsScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;			//Reference for player spaces
 	public TextMeshProUGUI titleText;				//Reference to title text
 	public List<GameObject> playerResults;			//Reference to player result holders
 	public List<TextMeshProUGUI> playerScores;		//Reference to player score texts
@@ -19,14 +18,14 @@ public class GameResultsScreen : BaseScreen {
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
-				playerSpaces [i].TogglePlaying (true);
+				GameHandler.instance.playerSpaces [i].TogglePlaying (true, false);
 				if (GameHandler.instance.players [i].isVIP) {
-					playerSpaces [i].ToggleVIP (true);
+					GameHandler.instance.playerSpaces [i].ToggleVIP (true);
 				}
-				playerSpaces [i].SetColor (GameHandler.instance.players [i].playerColor);
-				playerSpaces [i].playerName.text = GameHandler.instance.players [i].playerName;
+				GameHandler.instance.playerSpaces [i].SetColor (GameHandler.instance.players [i].playerColor);
+				GameHandler.instance.playerSpaces [i].playerName.text = GameHandler.instance.players [i].playerName;
 			} else {
-				playerSpaces [i].playerName.text = "";
+				GameHandler.instance.playerSpaces [i].playerName.text = "";
 			}
 		}
 		StartCoroutine ("ResultsDisplay");
@@ -72,10 +71,12 @@ public class GameResultsScreen : BaseScreen {
 		}
 		if (button == InputHandler.Buttons.a) {
 			//Skips to end of results if those are still going.  Otherwise shoots players back to play menu
-			if (!resultsDone) {
-				SkipResultsDisplay ();
-			} else {
-				ScreenHandler.instance.CreateScreen ("playscreen", true);
+			if (GameHandler.instance.players [player].isVIP) {
+				if (!resultsDone) {
+					SkipResultsDisplay ();
+				} else {
+					ScreenHandler.instance.CreateScreen ("playscreen", true);
+				}
 			}
 		}
 	}

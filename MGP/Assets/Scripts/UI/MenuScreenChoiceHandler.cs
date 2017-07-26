@@ -101,7 +101,7 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 		string textStr = menuOptions[selectedMenuOption].GetComponent<TextMeshProUGUI> ().text.ToLower();
 		switch (textStr) {
 			case "options":
-			
+				ScreenHandler.instance.CreateScreen ("optionsscreen", true);
 				break;
 			case "quit":
 				Application.Quit();

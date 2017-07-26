@@ -6,19 +6,20 @@ using TMPro;
 
 public class PlayScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;
 	public List<PlayScreenChoiceHandler> playerInputHandlers;
 	int playersReady=0, activePlayers=0;
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
-				playerSpaces [i].TogglePlaying (true);
-				playerSpaces [i].readyUpText.SetActive (false);
+				GameHandler.instance.playerSpaces [i].TogglePlaying (true, true);
+				GameHandler.instance.playerSpaces [i].readyUpText.SetActive (false);
 				if (GameHandler.instance.players [i].isVIP) {
-					playerSpaces [i].ToggleVIP (true);
+					GameHandler.instance.playerSpaces [i].ToggleVIP (true);
 				}
 				activePlayers++;
+			} else {
+				GameHandler.instance.playerSpaces [i].readyUpText.SetActive (true);
 			}
 		}
 		InputHandler.ButtonPressed += this.ButtonWasHit;
@@ -33,6 +34,9 @@ public class PlayScreen : BaseScreen {
 	}
 
 	void OnDestroy(){
+		for (int i = 0; i < 4; i++) {
+			GameHandler.instance.playerSpaces [i].readyUpText.SetActive (false);
+		}
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
 
@@ -64,15 +68,15 @@ public class PlayScreen : BaseScreen {
 
 	public void ButtonWasHit(int player, InputHandler.Buttons button){
 		if (button == InputHandler.Buttons.y) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				ScreenHandler.instance.CreateScreen ("menuscreen", true);
 			}
 		}
 		if (button == InputHandler.Buttons.b) {
-			playerInputHandlers [player].ScrollTextLeft (playerSpaces [player]);
+			playerInputHandlers [player].ScrollTextLeft (GameHandler.instance.playerSpaces [player]);
 		}
 		if (button == InputHandler.Buttons.x) {
-			playerInputHandlers [player].ScrollTextRight (playerSpaces [player]);
+			playerInputHandlers [player].ScrollTextRight (GameHandler.instance.playerSpaces [player]);
 		}
 		if (button == InputHandler.Buttons.a) {
 			if (activePlayers == playersReady && GameHandler.instance.players [player].isVIP) {
@@ -83,21 +87,21 @@ public class PlayScreen : BaseScreen {
 				if (playerInputHandlers [player].playerColorGO.activeInHierarchy) {
 					playersReady++;
 				}
-				playerInputHandlers [player].SelectText (player, playerSpaces [player]);
+				playerInputHandlers [player].SelectText (player, GameHandler.instance.playerSpaces [player]);
 			} else {
 				playerInputHandlers [player].gameObject.SetActive (true);
 				GameHandler.instance.players [player].isPlaying = true;
-				playerSpaces [player].TogglePlaying (true);
+				GameHandler.instance.playerSpaces [player].TogglePlaying (true, false);
 				activePlayers++;
 			}
 		}
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isVIP) {
 				if (activePlayers == playersReady) {
-					playerSpaces [i].readyUpText.GetComponent<TextMeshProUGUI> ().text = "Press <color=green>Green</color> to Start!";
-					playerSpaces [i].readyUpText.SetActive (true);
+					GameHandler.instance.playerSpaces [i].readyUpText.GetComponent<TextMeshProUGUI> ().text = "Press <color=green>Green</color> to Start!";
+					GameHandler.instance.playerSpaces [i].readyUpText.SetActive (true);
 				} else {
-					playerSpaces [i].readyUpText.SetActive (false);
+					GameHandler.instance.playerSpaces [i].readyUpText.SetActive (false);
 				}
 			}
 		}

@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameHandler : MonoBehaviour {
 
-	public static GameHandler instance; 				//static instance for global reference
-	public Player[] players = new Player[4]; 			//The player data we'll use the entire game
-	public Minigames minigames;							//Prefab reference containing minigame metadata
-	[HideInInspector] public Player winningPlayer;		//Player who won the last game
-	[HideInInspector] public Minigame chosenGame;		//Minigame that's being played
-	[HideInInspector] public float timer;				//Global timer we can reference during minigames
-	[HideInInspector] public GameObject chosenGameGO;	//Minigame GO we are using
+	public static GameHandler instance; 							//static instance for global reference
+	public Player[] players = new Player[4]; 						//The player data we'll use the entire game
+	public Minigames minigames;										//Prefab reference containing minigame metadata
+	public List<PlayerArea> playerSpaces = new List<PlayerArea>();	//Global reference to static player areas.
+	[HideInInspector] public Player winningPlayer;					//Player who won the last game
+	[HideInInspector] public Minigame chosenGame;					//Minigame that's being played
+	[HideInInspector] public float timer;							//Global timer we can reference during minigames
+	[HideInInspector] public GameObject chosenGameGO;				//Minigame GO we are using
 
 	//Initial setup on launch
 	//Sets instance and initializes player setup

@@ -6,7 +6,6 @@ using TMPro;
 
 public class MiniGameScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;							//Reference for player spaces
 	public RectTransform textTrans;									//Reference to text which animates early
 	public TextMeshProUGUI mName;									//Reference to minigame title text
 	public TextMeshProUGUI mRules;									//Reference to minigame rules text
@@ -24,14 +23,14 @@ public class MiniGameScreen : BaseScreen {
 			GameHandler.instance.players [i].pointScore = 0;
 			GameHandler.instance.players [i].timeScore = 00.00f;
 			if (GameHandler.instance.players [i].isPlaying) {
-				playerSpaces [i].TogglePlaying (true);
+				GameHandler.instance.playerSpaces [i].TogglePlaying (true,false);
 				if (GameHandler.instance.players [i].isVIP) {
-					playerSpaces [i].ToggleVIP (true);
+					GameHandler.instance.playerSpaces [i].ToggleVIP (true);
 				}
-				playerSpaces [i].SetColor (GameHandler.instance.players [i].playerColor);
-				playerSpaces [i].playerName.text = GameHandler.instance.players [i].playerName;
+				GameHandler.instance.playerSpaces [i].SetColor (GameHandler.instance.players [i].playerColor);
+				GameHandler.instance.playerSpaces [i].playerName.text = GameHandler.instance.players [i].playerName;
 			} else {
-				playerSpaces [i].playerName.text = "";
+				GameHandler.instance.playerSpaces [i].playerName.text = "";
 			}
 		}
 		mName.text = GameHandler.instance.chosenGame.name;

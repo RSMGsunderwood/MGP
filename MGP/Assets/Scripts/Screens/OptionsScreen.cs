@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class RulesScreen : BaseScreen {
+public class OptionsScreen : BaseScreen {
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
@@ -52,15 +51,15 @@ public class RulesScreen : BaseScreen {
 
 		}
 		if (button == InputHandler.Buttons.b) {
-			if (GameHandler.instance.playerSpaces [player].isVIP) {
+			if (GameHandler.instance.players [player].isVIP) {
 				ScreenHandler.instance.CreateScreen ("menuscreen", true);
 			}
 		}
 		if (button == InputHandler.Buttons.x) {
-			
+
 		}
 		if (button == InputHandler.Buttons.a) {
-			
+
 		}
 	}
 }

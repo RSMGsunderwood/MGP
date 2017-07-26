@@ -25,7 +25,7 @@ public class ScreenHandler : MonoBehaviour {
 	public void CreateScreen(string screenName ="titlescreen", bool destroyPrev = true){
 		GameObject newScreen = null;
 
-
+		//Could use case/switch here but would actually take a few more lines
 		if (screenName.ToLower () == "titlescreen") {
 			newScreen = screens [0];
 		} else if (screenName.ToLower () == "menuscreen") {
@@ -38,6 +38,8 @@ public class ScreenHandler : MonoBehaviour {
 			newScreen = screens [4];
 		} else if (screenName.ToLower () == "rulesscreen") {
 			newScreen = screens [5];
+		} else if (screenName.ToLower () == "optionsscreen") {
+			newScreen = screens [6];
 		}
 
 		newScreen = Instantiate (newScreen);

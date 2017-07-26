@@ -26,11 +26,13 @@ public class PlayerArea : MonoBehaviour {
 	/// Toggles if the player is playing
 	/// </summary>
 	/// <param name="playing">If set to true, player is toggled to playing</param>
-	public void TogglePlaying(bool playing = false){
+	public void TogglePlaying(bool playing, bool readyUp){
+		if (!playingBg.activeInHierarchy && playing) {
+			StartCoroutine ("JoinAnimation");
+		}
 		playingBg.SetActive (playing);
 		notPlayingBG.SetActive (!playing);
-		if (readyUpText != null)
-			readyUpText.SetActive (!playing);
+		readyUpText.SetActive (readyUp);
 	}
 
 	/// <summary>
@@ -49,4 +51,22 @@ public class PlayerArea : MonoBehaviour {
 		playingBg.GetComponent<Image> ().color = c;
 		vipImage.GetComponent<Image> ().color = c;
 	}
+
+	IEnumerator JoinAnimation(){
+		RectTransform rect = this.GetComponent<RectTransform> ();
+		float tween = 1f;
+		float time = .15f;
+		for (float i = 0; i < time; i += Time.deltaTime) {
+			if (i <= (time/2f)) {
+				tween = Mathf.Lerp (1f, 1.3f, i/(time/2f));
+				rect.localScale = new Vector3 (tween, tween, tween);
+			} else {
+				tween = Mathf.Lerp (1f, 1.3f, (time-i)/(time/2f));
+				rect.localScale = new Vector3 (tween, tween, tween);
+			}
+			yield return null;
+		}
+		rect.localScale = Vector3.one;
+	}
+
 }

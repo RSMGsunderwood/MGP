@@ -6,7 +6,6 @@ using TMPro;
 
 public class TitleScreen : BaseScreen {
 
-	public List<PlayerArea> playerSpaces;
 	public Image greenButton;
 	public Image redButton;
 	public TextMeshProUGUI greenText;
@@ -21,6 +20,8 @@ public class TitleScreen : BaseScreen {
 		#endif
 		for (int i = 0; i < 4; i++) {
 			GameHandler.instance.players [i].isPlaying = false;
+			GameHandler.instance.playerSpaces [i].TogglePlaying (false, false);
+			GameHandler.instance.playerSpaces [i].ToggleVIP (false);
 		}
 	}
 	//Unsubscribes from button event on destroy
@@ -58,15 +59,15 @@ public class TitleScreen : BaseScreen {
 		//Goes to menu if VIP presses A.  Makes player VIP if none have joined yet.
 		if (button == InputHandler.Buttons.a) {
 			if (vipSet) {
-				if (playerSpaces [player].isVIP) {
+				if (GameHandler.instance.playerSpaces [player].isVIP) {
 					ScreenHandler.instance.CreateScreen ("menuscreen", true);
 				}
 			} else {
 				GameHandler.instance.MakeVIP (player);
 				GameHandler.instance.players [player].isPlaying = true;
 				vipSet = true;
-				playerSpaces [player].ToggleVIP (true);
-				playerSpaces [player].TogglePlaying (true);
+				GameHandler.instance.playerSpaces [player].ToggleVIP (true);
+				GameHandler.instance.playerSpaces [player].TogglePlaying (true, false);
 				redText.gameObject.SetActive (true);
 				greenText.text = "Start Game";
 				redButton.color = new Color (redButton.color.r, redButton.color.g, redButton.color.b, 1);
@@ -74,12 +75,12 @@ public class TitleScreen : BaseScreen {
 		}
 		//Revokes VIP if VIP presses b
 		if (button == InputHandler.Buttons.b) {
-			if (playerSpaces [player].isVIP) {
+			if (GameHandler.instance.playerSpaces [player].isVIP) {
 				GameHandler.instance.MakeVIP (5);
 				GameHandler.instance.players [player].isPlaying = false;
 				vipSet = false;
-				playerSpaces [player].ToggleVIP (false);
-				playerSpaces [player].TogglePlaying (false);
+				GameHandler.instance.playerSpaces [player].ToggleVIP (false);
+				GameHandler.instance.playerSpaces [player].TogglePlaying (false, false);
 				redText.gameObject.SetActive (false);
 				greenText.text = "Press GREEN to become the VIP";
 				redButton.color = new Color (redButton.color.r, redButton.color.g, redButton.color.b, .5f);
