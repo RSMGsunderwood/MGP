@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour {
 
@@ -23,6 +24,7 @@ public class GameHandler : MonoBehaviour {
 		players [1].playerNumber = Player.PlayerNumber.Player2;
 		players [2].playerNumber = Player.PlayerNumber.Player3;
 		players [3].playerNumber = Player.PlayerNumber.Player4;
+		StartCoroutine ("areaAnimate");
 	}
 
 	//Simple way of quitting game.  Hit ESC to GTFO.
@@ -110,4 +112,19 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+
+	IEnumerator areaAnimate(){
+		float yTween = 0;
+		RectTransform playerTran = null;
+		yield return new WaitForSeconds (.5f);
+		for (int i = 0; i < 4; i++) {
+			playerTran = playerSpaces [i].GetComponent<RectTransform> ();
+			for (float x = 0; x < .25f; x += Time.deltaTime) {
+				yTween = Mathf.Lerp (playerTran.anchoredPosition.y, -158.4f, x / .25f);
+				playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, yTween);
+				yield return null;
+			}
+			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, -158.4f);
+		}
+	}
 }

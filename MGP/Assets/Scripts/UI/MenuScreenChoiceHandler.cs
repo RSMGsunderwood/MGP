@@ -10,6 +10,7 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 	public RectTransform menuOptionsHolder;									//Transform holding all menu options so they can be set easily
 	public Color selectedColor, normalColor;								//Color used for selected and normal options
 	int selectedMenuOption = 2;												//What the player is currently selecting for the menu
+	float moveAmount = 0;
 
 	//Initializes menu options
 	void Awake(){
@@ -71,6 +72,7 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 		for (int i = selectedMenuOption; i >= 0; i--) {
 			RectTransform temp = menuOptions [i].GetComponent<RectTransform>();
 			if (i == selectedMenuOption) {
+				moveAmount = temp.anchoredPosition.x;
 				temp.anchoredPosition = new Vector2 (0, temp.anchoredPosition.y);
 			} else {
 				temp.anchoredPosition = new Vector2 (tempX-temp.rect.width/2, temp.anchoredPosition.y);
@@ -92,6 +94,19 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 			menuOptions[i].GetComponent<TextMeshProUGUI> ().color = normalColor;
 		}
 		menuOptions[2].GetComponent<TextMeshProUGUI> ().color = selectedColor;
+		StopCoroutine ("moveItems");
+		StartCoroutine ("moveItems");
+	}
+
+	IEnumerator moveItems(){
+		float xTween = 0;
+		menuOptionsHolder.anchoredPosition = new Vector2 (menuOptionsHolder.anchoredPosition.x + moveAmount, menuOptionsHolder.anchoredPosition.y);
+		for (float i = 0; i < .5f; i += Time.deltaTime) {
+			xTween = Mathf.Lerp (menuOptionsHolder.anchoredPosition.x, 0, i / .5f);
+			menuOptionsHolder.anchoredPosition = new Vector2 (xTween, menuOptionsHolder.anchoredPosition.y);
+			yield return null;
+		}
+
 	}
 
 	/// <summary>
