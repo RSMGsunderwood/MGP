@@ -75,7 +75,7 @@ public class GameResultsScreen : BaseScreen {
 				if (!resultsDone) {
 					SkipResultsDisplay ();
 				} else {
-					ScreenHandler.instance.CreateScreen ("playscreen", true);
+					ScreenHandler.instance.CreateScreen ("menuscreen", true);
 				}
 			}
 		}

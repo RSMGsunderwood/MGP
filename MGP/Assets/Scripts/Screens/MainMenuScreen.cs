@@ -12,6 +12,9 @@ public class MainMenuScreen : BaseScreen {
 	//Initializes player spaces, menu selection, and button event subscription
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
+			GameHandler.instance.playerSpaces[i].SetName("PLAYER " + (i+1).ToString());
+			GameHandler.instance.players [i].playerName = "PLAYER " + (i+1).ToString ();
+			GameHandler.instance.playerSpaces [i].SetColor (GameHandler.instance.playerSpaces [i].defaultColor);
 			if (GameHandler.instance.players [i].isPlaying) {
 				GameHandler.instance.playerSpaces [i].TogglePlaying (true, false);
 				if (GameHandler.instance.players [i].isVIP) {

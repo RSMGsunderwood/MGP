@@ -12,6 +12,11 @@ public class PlayerArea : MonoBehaviour {
 	public GameObject readyUpText;				//Text telling player to ready up
 	public TextMeshProUGUI playerName;			//Name of player text
 	public bool isVIP;							//Is this player VIP?
+	[HideInInspector] public Color defaultColor;
+
+	void Awake(){
+		defaultColor = playingBg.GetComponent<Image> ().color;
+	}
 
 	/// <summary>
 	/// Toggles VIP for this player area

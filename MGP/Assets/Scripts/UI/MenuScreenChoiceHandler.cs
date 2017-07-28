@@ -41,7 +41,7 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 			}
 			tempX += (temp.rect.width / 2) + 40;
 		}
-		menuOptions[2].GetComponent<TextMeshProUGUI> ().color = selectedColor;
+		menuOptions[selectedMenuOption].GetComponent<TextMeshProUGUI> ().color = selectedColor;
 	}
 
 	//Scrolls text to the left
@@ -93,7 +93,7 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 			tempX += (temp.rect.width / 2) + 40;
 			menuOptions[i].GetComponent<TextMeshProUGUI> ().color = normalColor;
 		}
-		menuOptions[2].GetComponent<TextMeshProUGUI> ().color = selectedColor;
+		menuOptions[selectedMenuOption].GetComponent<TextMeshProUGUI> ().color = selectedColor;
 		StopCoroutine ("moveItems");
 		StartCoroutine ("moveItems");
 	}
@@ -106,7 +106,6 @@ public class MenuScreenChoiceHandler : MonoBehaviour {
 			menuOptionsHolder.anchoredPosition = new Vector2 (xTween, menuOptionsHolder.anchoredPosition.y);
 			yield return null;
 		}
-
 	}
 
 	/// <summary>

@@ -73,10 +73,14 @@ public class PlayScreen : BaseScreen {
 			}
 		}
 		if (button == InputHandler.Buttons.b) {
-			playerInputHandlers [player].ScrollTextLeft (GameHandler.instance.playerSpaces [player]);
+			if (GameHandler.instance.players [player].isPlaying) {
+				playerInputHandlers [player].ScrollTextLeft (GameHandler.instance.playerSpaces [player]);
+			}
 		}
 		if (button == InputHandler.Buttons.x) {
-			playerInputHandlers [player].ScrollTextRight (GameHandler.instance.playerSpaces [player]);
+			if (GameHandler.instance.players [player].isPlaying) {
+				playerInputHandlers [player].ScrollTextRight (GameHandler.instance.playerSpaces [player]);
+			}
 		}
 		if (button == InputHandler.Buttons.a) {
 			if (activePlayers == playersReady && GameHandler.instance.players [player].isVIP) {
@@ -106,4 +110,5 @@ public class PlayScreen : BaseScreen {
 			}
 		}
 	}
+
 }

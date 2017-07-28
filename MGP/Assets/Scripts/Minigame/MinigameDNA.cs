@@ -96,11 +96,11 @@ public class MinigameDNA : MinigameMain {
 			if (passed) {
 				pProgress [player]++;
 				GameHandler.instance.players [player].pointScore++;
-				if (pProgress [player] + 1 < playString.Length) {
+				if (pProgress [player] < playString.Length) {
 					pIndicators [player].anchoredPosition = new Vector2 (dnaString [pProgress [player]].GetComponent<RectTransform> ().anchoredPosition.x, dnaString [pProgress [player]].GetComponent<RectTransform> ().anchoredPosition.y - 15 - (2 * player));
 				} else {
 					pIndicators [player].gameObject.SetActive (false);
-					GameHandler.instance.players [player].timeScore = GameHandler.instance.chosenGame.timer - GameHandler.instance.timer;
+					GameHandler.instance.players [player].timeScore = GameHandler.instance.timer;
 					playersFinished++;
 				}
 			//If the player hit the wrong button then they're done and get no points or time score.
