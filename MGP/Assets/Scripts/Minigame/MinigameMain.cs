@@ -20,7 +20,8 @@ public class Minigame {
 	};
 	public enum Tags{					//Metadata descriptive tags
 		speed,
-		awareness
+		awareness,
+		accuracy
 	};
 	public Gametype gametype;			//What type of minigame is this?
 	public float timer;					//Timer for this minigame
