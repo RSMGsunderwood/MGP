@@ -6,8 +6,25 @@ using TMPro;
 
 public class MinigameRamenRush : MinigameMain {
 
+	public List<RamenRushOrder> ramenOrders;
+	public List<string> soups;
+	public List<string> meats;
+	public List<string> toppings;
+
+
+
 	//Initialize game on startup
 	void Awake(){
+		//Sets up orders
+		string tempSoup = "";
+		string tempMeat = "";
+		string tempTopping = "";
+		for (int i = 0; i < ramenOrders.Count; i++) {
+			tempSoup = soups [Random.Range (0, soups.Count)];
+			tempMeat = meats [Random.Range (0, meats.Count)];
+			tempTopping = toppings [Random.Range (0, toppings.Count)];
+			ramenOrders [i].AssignOrder (tempSoup, tempMeat, tempTopping);
+		}
 		//Subscribe to button inputs
 		InputHandler.ButtonPressed += this.ButtonPress;
 	}
@@ -38,4 +55,10 @@ public class MinigameRamenRush : MinigameMain {
 				
 		}
 	}
+}
+
+public class PlayerOrder{
+	string soup;
+	string meat;
+	string topping;
 }
