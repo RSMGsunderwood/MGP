@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class MinigameMain : MonoBehaviour {
 
-	//Abstract void for winning (not used currently)
-	public abstract void OnWin ();
-
 	//Abstract void for button presses
 	public abstract void ButtonPress (int player, InputHandler.Buttons button);
 

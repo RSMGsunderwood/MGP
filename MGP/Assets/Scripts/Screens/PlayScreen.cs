@@ -84,7 +84,7 @@ public class PlayScreen : BaseScreen {
 		}
 		if (button == InputHandler.Buttons.a) {
 			if (activePlayers == playersReady && GameHandler.instance.players [player].isVIP) {
-				GameHandler.instance.ChooseGame (0, true);
+				GameHandler.instance.ChooseGame (1, false);
 				ScreenHandler.instance.CreateScreen ("minigamescreen", true);
 			}
 			if (GameHandler.instance.players [player].isPlaying) {

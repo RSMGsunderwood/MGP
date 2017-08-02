@@ -57,12 +57,6 @@ public class MinigameDNA : MinigameMain {
 		InputHandler.ButtonPressed -= this.ButtonPress;
 	}
 
-	//Temporary override
-	public override void OnWin ()
-	{
-		
-	}
-
 	//Button input override
 	public override void ButtonPress(int player, InputHandler.Buttons button){
 		bool passed = false;

@@ -120,11 +120,11 @@ public class GameHandler : MonoBehaviour {
 		for (int i = 0; i < 4; i++) {
 			playerTran = playerSpaces [i].GetComponent<RectTransform> ();
 			for (float x = 0; x < .25f; x += Time.deltaTime) {
-				yTween = Mathf.Lerp (playerTran.anchoredPosition.y, -158.4f, x / .25f);
+				yTween = Mathf.Lerp (playerTran.anchoredPosition.y, -175f, x / .25f);
 				playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, yTween);
 				yield return null;
 			}
-			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, -158.4f);
+			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, -175f);
 		}
 	}
 }
