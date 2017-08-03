@@ -70,7 +70,7 @@ public class RamenRushMachine : MonoBehaviour {
 				noodleHit++;
 				if (noodleHit >= 6) {
 					noodleHit = 0;
-					mgScript.PlayerProgress (player, 3);
+					mgScript.PlayerProgress (player, 4);
 					sets [4].SetActive (false);
 					sets [0].SetActive (true);
 				}

@@ -20,16 +20,6 @@ public class MinigameRamenRush : MinigameMain {
 
 	//Initialize game on startup
 	void Awake(){
-		//Sets up orders
-		string tempSoup = "";
-		string tempMeat = "";
-		string tempTopping = "";
-		for (int i = 0; i < ramenOrders.Count; i++) {
-			tempSoup = soups [Random.Range (0, soups.Count)];
-			tempMeat = meats [Random.Range (0, meats.Count)];
-			tempTopping = toppings [Random.Range (0, toppings.Count)];
-			ramenOrders [i].AssignOrder (tempSoup, tempMeat, tempTopping);
-		}
 		for (int i = 0; i < 4; i++) {
 			PlayerOrder playerO = new PlayerOrder();
 			bool temp = true;
@@ -41,6 +31,10 @@ public class MinigameRamenRush : MinigameMain {
 			}
 			ramenMachines [i].mgScript = this;
 			pOrder.Add (playerO);
+		}
+		for (int i = 0; i < ramenOrders.Count; i++) {
+			ramenOrders [i].mgScript = this;
+			ramenOrders [i].AssignOrder ();
 		}
 		//Subscribe to button inputs
 		InputHandler.ButtonPressed += this.ButtonPress;
@@ -89,7 +83,13 @@ public class MinigameRamenRush : MinigameMain {
 						playerScore += meatP [pOrder [player].meatChoice];
 						playerScore += toppingP [pOrder [player].toppingChoice];
 						GameHandler.instance.players [player].pointScore += playerScore;
+						ramenOrders [i].Reset ();
+						for (int x = 0; x < ramenOrders.Count; x++) {
+							ramenOrders [x].DisableCheck (player);
+							pOrder [player].matching [x] = true;
+						}
 						progress = 0;
+
 					}
 					break;
 				default:

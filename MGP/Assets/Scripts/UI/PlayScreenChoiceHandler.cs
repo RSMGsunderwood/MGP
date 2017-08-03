@@ -153,7 +153,7 @@ public class PlayScreenChoiceHandler : MonoBehaviour {
 			} else {
 				options [selectedOb].GetComponent<Image> ().color = selectedColor;
 			}
-		} else {
+		} else if(playerColorGO.gameObject.activeInHierarchy) {
 			pArea.SetColor(colorOptions[selectedOb].GetComponent<TextMeshProUGUI>().color);
 		}
 		StopCoroutine ("moveItems");
