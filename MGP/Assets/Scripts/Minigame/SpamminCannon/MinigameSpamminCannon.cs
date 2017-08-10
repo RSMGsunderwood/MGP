@@ -8,10 +8,16 @@ public class MinigameSpamminCannon : MinigameMain {
 	public Color rCol, bCol, yCol, gCol;
 	public Image displayButton;
 	public SpamminCannonPlayerHud[] playerHuds;
+	List<int> choices = new List<int>();
 	int currentChoice;
+	int checkChoice=0;
 
 	//Initialize game on startup
 	void Awake(){
+		for (int i = 1; i < 5; i++) {
+			choices.Add (i);
+		}
+		ChooseRandomButton ();
 		InputHandler.ButtonPressed += this.ButtonPress;
 	}
 
@@ -22,30 +28,70 @@ public class MinigameSpamminCannon : MinigameMain {
 
 	IEnumerator ShowNewButton(){
 		float lerp = 0;
-		for (float i = 0; i < .2f; i += Time.deltaTime) {
-			lerp = Mathf.SmoothStep (1, .8f, (.2f - i) / .2f);
-
+		RectTransform buttonTran = displayButton.GetComponent<RectTransform> ();
+		for (float i = 0; i < .1f; i += Time.deltaTime) {
+			lerp = Mathf.SmoothStep (.8f, 1, (.1f - i) / .1f);
+			buttonTran.localScale = new Vector3 (lerp, lerp, lerp);
 			yield return null;
 		}
+		buttonTran.localScale = new Vector3 (.8f, .8f, .8f);
+		checkChoice = currentChoice;
+		if (checkChoice == 1) {
+			displayButton.color = rCol;
+		} else if (checkChoice == 2) {
+			displayButton.color = bCol;
+		} else if (checkChoice == 3) {
+			displayButton.color = yCol;
+		} else if (checkChoice == 4) {
+			displayButton.color = gCol;
+		}
+		for (float i = 0; i < .1f; i += Time.deltaTime) {
+			lerp = Mathf.SmoothStep (.8f, 1, i/ .1f);
+			buttonTran.localScale = new Vector3 (lerp, lerp, lerp);
+			yield return null;
+		}
+		buttonTran.localScale = new Vector3 (1, 1, 1);
+		yield return new WaitForSeconds (Random.Range (3f, 6f));
+		ChooseRandomButton ();
 	}
 
 	public void ChooseRandomButton(){
-		currentChoice = Random.Range (1, 5);
+		int tempChoice = 0;
+		tempChoice = Random.Range (0, choices.Count);
+		int lastChoice = currentChoice;
+		currentChoice = choices [tempChoice];
+		Debug.Log (currentChoice);
+		if(lastChoice!=0)
+			choices.Add (lastChoice);
+		choices.Remove (currentChoice);
+		StartCoroutine ("ShowNewButton");
 	}
 
 	//Button input override
 	public override void ButtonPress(int player, InputHandler.Buttons button){
+		bool passed = false;
 		if (button == InputHandler.Buttons.y) {
-			
+			if (checkChoice == 3) {
+				passed = true;
+			}
 		}
 		if (button == InputHandler.Buttons.b) {
-			
+			if (checkChoice == 1) {
+				passed = true;
+			}
 		}
 		if (button == InputHandler.Buttons.x) {
-			
+			if (checkChoice == 2) {
+				passed = true;
+			}
 		}
 		if (button == InputHandler.Buttons.a) {
-			
+			if (checkChoice == 4) {
+				passed = true;
+			}
+		}
+		if (passed) {
+			playerHuds [player].AddToGauge (player);
 		}
 	}
 }
