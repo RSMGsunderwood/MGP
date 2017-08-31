@@ -95,6 +95,9 @@ public class MiniGameScreen : BaseScreen {
 				if (GameHandler.instance.players [player].isVIP && !gameStarted) {
 					gameStarted = true;
 					textTrans.gameObject.SetActive (false);
+					if (GameHandler.instance.chosenGame.hidePlayerAreas) {
+						GameHandler.instance.StartCoroutine(GameHandler.instance.areaAnimate(true));
+					}
 					StartCoroutine ("CountDownStart");
 				}
 			}

@@ -111,4 +111,7 @@ public class MinigameDNA : MinigameMain {
 			}
 		}
 	}
+
+	public override void ButtonRelease(int player, InputHandler.Buttons button){
+	}
 }

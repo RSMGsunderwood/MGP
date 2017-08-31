@@ -10,11 +10,13 @@ public class ScreenHandler : MonoBehaviour {
 	public string prevScreenName;			//Previously shown screen name
 	public GameObject currentScreen;		//Currently shown screen gameobject
 	public string currentScreenName;		//Currently shown screen name
+	public bool startGame;
 
 	//Assigns instance and creates titlescreen
 	void Start(){
 		instance = this;
-		CreateScreen ("titlescreen");
+		if(startGame)
+			CreateScreen ("titlescreen");
 	}
 
 	/// <summary>

@@ -24,7 +24,7 @@ public class GameHandler : MonoBehaviour {
 		players [1].playerNumber = Player.PlayerNumber.Player2;
 		players [2].playerNumber = Player.PlayerNumber.Player3;
 		players [3].playerNumber = Player.PlayerNumber.Player4;
-		StartCoroutine ("areaAnimate");
+		StartCoroutine (areaAnimate(true));
 	}
 
 	//Simple way of quitting game.  Hit ESC to GTFO.
@@ -113,18 +113,22 @@ public class GameHandler : MonoBehaviour {
 	}
 
 
-	IEnumerator areaAnimate(){
+	public IEnumerator areaAnimate(bool down){
 		float yTween = 0;
+		float tweenTo = -175f;
+		if (down) {
+			tweenTo = -280f;
+		}
 		RectTransform playerTran = null;
 		yield return new WaitForSeconds (.5f);
 		for (int i = 0; i < 4; i++) {
 			playerTran = playerSpaces [i].GetComponent<RectTransform> ();
 			for (float x = 0; x < .25f; x += Time.deltaTime) {
-				yTween = Mathf.Lerp (playerTran.anchoredPosition.y, -175f, x / .25f);
+				yTween = Mathf.Lerp (playerTran.anchoredPosition.y, tweenTo, x / .25f);
 				playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, yTween);
 				yield return null;
 			}
-			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, -175f);
+			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, tweenTo);
 		}
 	}
 }

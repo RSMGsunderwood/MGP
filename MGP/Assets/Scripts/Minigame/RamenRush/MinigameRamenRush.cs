@@ -51,6 +51,9 @@ public class MinigameRamenRush : MinigameMain {
 		ramenMachines [player].PlayerInput (player, button);
 	}
 
+	public override void ButtonRelease(int player, InputHandler.Buttons button){
+	}
+
 	public void PlayerProgress(int player, int progress){
 		for (int i = 0; i < ramenOrders.Count; i++) {
 			if (pOrder [player].matching [i]) {

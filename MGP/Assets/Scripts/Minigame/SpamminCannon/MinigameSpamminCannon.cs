@@ -94,4 +94,7 @@ public class MinigameSpamminCannon : MinigameMain {
 			playerHuds [player].AddToGauge (player);
 		}
 	}
+
+	public override void ButtonRelease(int player, InputHandler.Buttons button){
+	}
 }

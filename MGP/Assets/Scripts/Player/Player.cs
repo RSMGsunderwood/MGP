@@ -14,6 +14,7 @@ public class Player {
 	public PlayerNumber playerNumber;		//Which player number is this player?
 	public bool isVIP = false;				//VIP toggle
 	public bool isPlaying = false;			//Is this player currently playing?
+	public bool isTheEnemy = false;			//Is this the player versus 3 others?
 	public int pointScore;					//Points used for minigame
 	public float timeScore;					//Time used for minigame
 }
