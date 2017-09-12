@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,6 +17,8 @@ public class MiniGameScreen : BaseScreen {
 	public List<GameObject> buttons = new List<GameObject>();		//Reference to button gameobject
 	public Slider timerUI;											//Reference to minigame timer slider
 	bool gameStarted = false;										//Bool that switches when minigame begins
+	public delegate void TimeAction();
+	public static event TimeAction TimeOut;
 	//Initializes player spaces and pulls minigame metadata from the metadata object
 	void Awake(){
 		StartCoroutine ("TitleTween");
@@ -151,6 +154,10 @@ public class MiniGameScreen : BaseScreen {
 		}
 		timerText.text = "00.00";
 		GameHandler.instance.CalculateWinner ();
-		ScreenHandler.instance.CreateScreen ("resultsscreen", true);
+		if (TimeOut != null) {
+			MiniGameScreen.TimeOut ();
+		}
+		//ScreenHandler.instance.CreateScreen ("resultsscreen", true);
+
 	}
 }
