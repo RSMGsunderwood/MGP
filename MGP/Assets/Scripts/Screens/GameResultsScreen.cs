@@ -28,11 +28,17 @@ public class GameResultsScreen : BaseScreen {
 				GameHandler.instance.playerSpaces [i].playerName.text = "";
 			}
 		}
+		if (GameHandler.instance.areasDown) {
+			GameHandler.instance.StartCoroutine(GameHandler.instance.areaAnimate(false));
+		}
 		StartCoroutine ("ResultsDisplay");
 		InputHandler.ButtonPressed += this.ButtonWasHit;
 	}
 	//Unsubscribes from button press event when destroyed
 	void OnDestroy(){
+		for (int i = 0; i < 4; i++) {
+			GameHandler.instance.players [i].isTheEnemy = false;
+		}
 		InputHandler.ButtonPressed -= this.ButtonWasHit;
 	}
 

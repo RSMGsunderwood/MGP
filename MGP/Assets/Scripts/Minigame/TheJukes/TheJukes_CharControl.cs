@@ -10,7 +10,7 @@ public class TheJukes_CharControl : MonoBehaviour {
 	Rigidbody2D rBody;
 	CircleCollider2D cCol;
 	Image imgRef;
-	[HideInInspector] MinigameTheJukes minigameRef;
+	[HideInInspector] public MinigameTheJukes minigameRef;
 	bool alive = true;
 	public bool isGodzilla = false;
 	float speed = 100;
@@ -50,6 +50,7 @@ public class TheJukes_CharControl : MonoBehaviour {
 			if (c.gameObject.GetComponent<TheJukes_CharControl> () != null) {
 				c.gameObject.GetComponent<TheJukes_CharControl> ().Kill ();
 				c.gameObject.GetComponent<TheJukes_CharControl> ().SetColor (Color.grey);
+				c.gameObject.GetComponent<RectTransform> ().SetSiblingIndex (0);
 				minigameRef.PlayerKilled ();
 			}
 		}

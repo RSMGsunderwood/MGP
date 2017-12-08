@@ -19,9 +19,19 @@ public class MiniGameScreen : BaseScreen {
 	bool gameStarted = false;										//Bool that switches when minigame begins
 	public delegate void TimeAction();
 	public static event TimeAction TimeOut;
+
 	//Initializes player spaces and pulls minigame metadata from the metadata object
 	void Awake(){
 		StartCoroutine ("TitleTween");
+		if (GameHandler.instance.chosenGame.gametype == Minigame.Gametype.OneVersusThree) {
+			List<Player> activeP = new List<Player> ();
+			for (int x = 0; x < 4; x++) {
+				if (GameHandler.instance.players [x].isPlaying) {
+					activeP.Add (GameHandler.instance.players [x]);
+				}
+			}
+			activeP [UnityEngine.Random.Range (0, activeP.Count)].isTheEnemy = true;
+		}
 		for (int i = 0; i < 4; i++) {
 			GameHandler.instance.players [i].pointScore = 0;
 			GameHandler.instance.players [i].timeScore = 00.00f;
@@ -106,6 +116,13 @@ public class MiniGameScreen : BaseScreen {
 			}
 		}
 	}
+
+	public void StopTimer(){
+		StopCoroutine ("TimerRoutine");
+		timerUI.gameObject.SetActive (false);
+		timerText.gameObject.SetActive (false);
+	}
+
 	//Countdown coroutine.  Starts game after and shows timer if metadata says it should.
 	IEnumerator CountDownStart(){
 		for (float x = 3; x > -1; x--) {
@@ -120,6 +137,7 @@ public class MiniGameScreen : BaseScreen {
 		}
 		countdownText.text = "";
 		GameHandler.instance.chosenGameGO = Instantiate (GameHandler.instance.chosenGame.mPrefab);
+		GameHandler.instance.chosenGameGO.GetComponent<MinigameMain> ().mgScreen = this;
 		foreach (GameObject temp in buttons) {
 			temp.SetActive (false);
 		}

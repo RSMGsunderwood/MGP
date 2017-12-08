@@ -13,6 +13,7 @@ public class GameHandler : MonoBehaviour {
 	[HideInInspector] public Minigame chosenGame;					//Minigame that's being played
 	[HideInInspector] public float timer;							//Global timer we can reference during minigames
 	[HideInInspector] public GameObject chosenGameGO;				//Minigame GO we are using
+	[HideInInspector] public bool areasDown = true;
 
 	//Initial setup on launch
 	//Sets instance and initializes player setup
@@ -24,7 +25,7 @@ public class GameHandler : MonoBehaviour {
 		players [1].playerNumber = Player.PlayerNumber.Player2;
 		players [2].playerNumber = Player.PlayerNumber.Player3;
 		players [3].playerNumber = Player.PlayerNumber.Player4;
-		StartCoroutine (areaAnimate(true));
+		StartCoroutine (areaAnimate(false));
 	}
 
 	//Simple way of quitting game.  Hit ESC to GTFO.
@@ -117,7 +118,7 @@ public class GameHandler : MonoBehaviour {
 		float yTween = 0;
 		float tweenTo = -175f;
 		if (down) {
-			tweenTo = -280f;
+			tweenTo = -340f;
 		}
 		RectTransform playerTran = null;
 		yield return new WaitForSeconds (.5f);
@@ -130,5 +131,6 @@ public class GameHandler : MonoBehaviour {
 			}
 			playerTran.anchoredPosition = new Vector2 (playerTran.anchoredPosition.x, tweenTo);
 		}
+		areasDown = down;
 	}
 }

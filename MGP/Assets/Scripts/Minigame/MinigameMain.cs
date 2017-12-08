@@ -8,6 +8,8 @@ public abstract class MinigameMain : MonoBehaviour {
 	//Abstract void for button releases
 	public abstract void ButtonRelease (int player, InputHandler.Buttons button);
 
+	public MiniGameScreen mgScreen;
+
 }
 //Minigame class with metadata and gameobject reference
 [System.Serializable]

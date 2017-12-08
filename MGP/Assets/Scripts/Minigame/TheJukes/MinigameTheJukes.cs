@@ -7,24 +7,31 @@ public class MinigameTheJukes : MinigameMain {
 
 	public List<TheJukes_CharControl> charReference = new List<TheJukes_CharControl>();
 	public TextMeshProUGUI winnerText;
-	List<TheJukes_CharControl> charControls = new List<TheJukes_CharControl>();
+	public List<TheJukes_CharControl> charControls = new List<TheJukes_CharControl>();
 	[HideInInspector] int livingPlayers = 0;
 
 	//Initialize game on startup
 	void Start(){
+		int nPlayers = 1;
+		int activePlayers = 0;
 		for (int i = 0; i < 4; i++) {
-			int normalPlayer = 1;
 			if (GameHandler.instance.players [i].isPlaying) {
 				if (GameHandler.instance.players [i].isTheEnemy) {
-					charControls.Add(charReference[0]);
-					charControls [i].isGodzilla = true;
+					charControls.Add (charReference [0]);
+					charControls [charControls.Count-1].isGodzilla = true;
 				} else {
-					charControls.Add(charReference[normalPlayer]);
-					normalPlayer++;
+					charControls.Add (charReference [nPlayers]);
 					livingPlayers++;
+					nPlayers++;
 				}
-				charControls [i].SetColor (GameHandler.instance.players [i].playerColor);
+				charControls [charControls.Count-1].SetColor (GameHandler.instance.players [i].playerColor);
+				activePlayers++;
+			} else {
+				charControls.Add (charReference [nPlayers]);
+				charControls [charControls.Count-1].gameObject.SetActive (false);
+				nPlayers++;
 			}
+			charControls [i].minigameRef = this;
 		}
 		MiniGameScreen.TimeOut += this.TimeOut;
 		InputHandler.ButtonPressed += this.ButtonPress;
@@ -48,6 +55,7 @@ public class MinigameTheJukes : MinigameMain {
 					winningPlayer = GameHandler.instance.players [i].playerName;
 				}
 			}
+			mgScreen.StopTimer ();
 			winnerText.text = winningPlayer + " Wins!";
 			StartCoroutine ("WinningRoutine");
 		}
@@ -66,8 +74,10 @@ public class MinigameTheJukes : MinigameMain {
 	}
 
 	IEnumerator WinningRoutine(){
+		winnerText.gameObject.SetActive (true);
 		StartCoroutine ("PulseText");
 		yield return new WaitForSeconds (5.0f);
+		ScreenHandler.instance.CreateScreen ("resultsscreen", true);
 	}
 
 	IEnumerator PulseText(){

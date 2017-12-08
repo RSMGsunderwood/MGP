@@ -32,16 +32,25 @@ public class InputHandler : MonoBehaviour {
 	//This is where we'll check for inputs for all players
 	void Update()
 	{
+		#if !UNITY_EDITOR_OSX
+		GamePadState testState;
+		for (int i = 0; i < 4; i++) {
+			PlayerIndex getIndex = (PlayerIndex)i;
+			testState = GamePad.GetState (getIndex);
+			if(testState.IsConnected){
+				prevState [i] = states [i];
+				states [i] = GamePad.GetState (getIndex);
+			}
+		}
+		#endif
 		//Only check if a button is actually being pressed or released
 		if(ButtonPressed!=null)
 			for (int i = 0; i < 4; i++) {
 			//xInput section
 			#if !UNITY_EDITOR_OSX
-			PlayerIndex getIndex = (PlayerIndex)i;
-			GamePadState testState = GamePad.GetState (getIndex);
+				PlayerIndex getIndex = (PlayerIndex)i;
+				testState = GamePad.GetState (getIndex);
 			if (testState.IsConnected) {
-				prevState [i] = states [i];
-				states [i] = GamePad.GetState (getIndex);
 				if (prevState [i].Buttons.A == ButtonState.Released && states [i].Buttons.A == ButtonState.Pressed) {
 					InputHandler.ButtonPressed (i, InputHandler.Buttons.a);
 				}
@@ -135,10 +144,8 @@ public class InputHandler : MonoBehaviour {
 				//xInput section
 				#if !UNITY_EDITOR_OSX
 				PlayerIndex getIndex = (PlayerIndex)i;
-				GamePadState testState = GamePad.GetState (getIndex);
+				testState = GamePad.GetState (getIndex);
 				if (testState.IsConnected) {
-					prevState [i] = states [i];
-					states [i] = GamePad.GetState (getIndex);
 					if(prevState [i].Buttons.A == ButtonState.Pressed && states [i].Buttons.A == ButtonState.Released) {
 						InputHandler.ButtonReleased (i, InputHandler.Buttons.a);
 					}
