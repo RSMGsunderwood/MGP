@@ -6,12 +6,17 @@ public class MinigameBreakingApart : MinigameMain {
 
 	public Color rCol, bCol, yCol, gCol;
 	public List<BreakingApartPlayerZone> playerZones;
+	public List<GameObject> playerLabels;
 	bool roundInProgress = false;
 
 	void Awake(){
-		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.SetStrings ();
-			z.mGame = this;
+		for (int i = 0; i < 4; i++) {
+			if (GameHandler.instance.players [i].isPlaying) {
+				playerLabels [i].SetActive (true);
+				playerZones [i].gameObject.SetActive (true);
+				playerZones [i].SetStrings ();
+				playerZones [i].mGame = this;
+			}
 		}
 		StartCoroutine ("GameRoutine");
 		InputHandler.ButtonPressed += this.ButtonPress;
@@ -24,62 +29,71 @@ public class MinigameBreakingApart : MinigameMain {
 
 	IEnumerator GameRoutine(){
 		#region Round 1
-		yield return new WaitForSeconds (.25f);
+		/*yield return new WaitForSeconds (.25f);
 		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.MoveCurtain(false));
-		}
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.MoveCurtain(false));
+		}*/
 		yield return new WaitForSeconds (.5f);
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
 			z.finished = false;
 			z.currentRound = z.round1S;
-			z.StartCoroutine(z.StartRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.StartRound());
 		}
 		roundInProgress = true;
 		yield return new WaitForSeconds (5f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.EndRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.EndRound());
 		}
 		#endregion
 
 		#region Round 2
 		yield return new WaitForSeconds (2f);
-		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.MoveCurtain(false));
-		}
+		/*foreach (BreakingApartPlayerZone z in playerZones) {
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.MoveCurtain(false));
+		}*/
 		yield return new WaitForSeconds (.5f);
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
 			z.finished = false;
 			z.currentRound = z.round2S;
-			z.StartCoroutine(z.StartRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.StartRound());
 		}
 		roundInProgress = true;
 		yield return new WaitForSeconds (7f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.EndRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.EndRound());
 		}
 		#endregion
 
 		#region Round 3
 		yield return new WaitForSeconds (2f);
-		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.MoveCurtain(false));
+		/*foreach (BreakingApartPlayerZone z in playerZones) {
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.MoveCurtain(false));
 		}
-		yield return new WaitForSeconds (.5f);
+		yield return new WaitForSeconds (.5f);*/
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
 			z.finished = false;
 			z.currentRound = z.round3S;
-			z.StartCoroutine(z.StartRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.StartRound());
 		}
 		roundInProgress = true;
 		yield return new WaitForSeconds (6f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
-			z.StartCoroutine(z.EndRound());
+			if(z.gameObject.activeInHierarchy)
+				z.StartCoroutine(z.EndRound());
 		}
 		#endregion
 	}
@@ -90,12 +104,8 @@ public class MinigameBreakingApart : MinigameMain {
 			string bInput = button.ToString ().ToLower ();
 			if (playerZones [player].currentOrder < playerZones [player].currentRound.Count) {
 				if (playerZones [player].buttons [playerZones [player].currentOrder].CheckButton (bInput)) {
-					playerZones [player].currentOrder++;
+					playerZones [player].ButtonPressed (true);
 					GameHandler.instance.players [player].pointScore++;
-					if (playerZones [player].currentOrder >= playerZones [player].currentRound.Count) {
-						playerZones [player].finished = true;
-
-					}
 				} else {
 					playerZones [player].currentOrder = 99;
 					GameHandler.instance.players [player].pointScore--;
