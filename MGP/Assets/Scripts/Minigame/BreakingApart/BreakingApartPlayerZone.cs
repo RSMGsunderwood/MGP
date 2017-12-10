@@ -128,9 +128,8 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 		for (int i = 0; i < currentRound.Count; i++) {
 			buttons [i].buttonImage.color = new Color (buttons [i].buttonImage.color.r, buttons [i].buttonImage.color.g, buttons [i].buttonImage.color.b, 0);
 			buttons [i].buttonText.color = new Color (buttons [i].buttonText.color.r, buttons [i].buttonText.color.g, buttons [i].buttonText.color.b, 0);
-			buttons [i].buttonImage.gameObject.SetActive (true);
-			buttons [i].buttonText.gameObject.SetActive (true);
-			SetButton (buttons[i], round1S [i].ToLower());
+			buttons [i].buttonImage.transform.parent.gameObject.SetActive (true);
+			SetButton (buttons[i], currentRound [i].ToLower());
 			for (float x = 0; x < .2f; x += Time.deltaTime) {
 				lerpTemp = Mathf.SmoothStep (0, 1, x / .2f);
 				buttons [i].buttonImage.color = new Color (buttons [i].buttonImage.color.r, buttons [i].buttonImage.color.g, buttons [i].buttonImage.color.b, lerpTemp);
@@ -167,6 +166,8 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 			buttons [i].buttonImage.color = new Color (buttons [i].buttonImage.color.r, buttons [i].buttonImage.color.g, buttons [i].buttonImage.color.b, 0);
 			buttons [i].buttonText.color = new Color (buttons [i].buttonText.color.r, buttons [i].buttonText.color.g, buttons [i].buttonText.color.b, 0);
 		}
+		logLeft.localEulerAngles = Vector3.zero;
+		logRight.localEulerAngles = Vector3.zero;
 		zoomOb.localScale = Vector3.one;
 	}
 
@@ -212,6 +213,7 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 			StartCoroutine (ShowCorrect (buttons [currentOrder].buttonRight.gameObject));
 			currentOrder++;
 			if (currentOrder >= currentRound.Count) {
+				StartCoroutine ("SplitLog");
 				finished = true;
 			}
 		} else {
