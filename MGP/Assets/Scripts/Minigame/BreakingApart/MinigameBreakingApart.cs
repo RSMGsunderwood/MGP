@@ -29,11 +29,6 @@ public class MinigameBreakingApart : MinigameMain {
 
 	IEnumerator GameRoutine(){
 		#region Round 1
-		/*yield return new WaitForSeconds (.25f);
-		foreach (BreakingApartPlayerZone z in playerZones) {
-			if(z.gameObject.activeInHierarchy)
-				z.StartCoroutine(z.MoveCurtain(false));
-		}*/
 		yield return new WaitForSeconds (.5f);
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
@@ -53,11 +48,6 @@ public class MinigameBreakingApart : MinigameMain {
 
 		#region Round 2
 		yield return new WaitForSeconds (2f);
-		/*foreach (BreakingApartPlayerZone z in playerZones) {
-			if(z.gameObject.activeInHierarchy)
-				z.StartCoroutine(z.MoveCurtain(false));
-		}*/
-		yield return new WaitForSeconds (.5f);
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
 			z.finished = false;
@@ -76,11 +66,6 @@ public class MinigameBreakingApart : MinigameMain {
 
 		#region Round 3
 		yield return new WaitForSeconds (2f);
-		/*foreach (BreakingApartPlayerZone z in playerZones) {
-			if(z.gameObject.activeInHierarchy)
-				z.StartCoroutine(z.MoveCurtain(false));
-		}
-		yield return new WaitForSeconds (.5f);*/
 		foreach (BreakingApartPlayerZone z in playerZones) {
 			z.currentOrder = 0;
 			z.finished = false;
@@ -96,6 +81,8 @@ public class MinigameBreakingApart : MinigameMain {
 				z.StartCoroutine(z.EndRound());
 		}
 		#endregion
+		yield return new WaitForSeconds (2f);
+		ScreenHandler.instance.CreateScreen ("resultsscreen", true);
 	}
 
 	//Button input override
@@ -107,6 +94,7 @@ public class MinigameBreakingApart : MinigameMain {
 					playerZones [player].ButtonPressed (true);
 					GameHandler.instance.players [player].pointScore++;
 				} else {
+					playerZones [player].ButtonPressed (false);
 					playerZones [player].currentOrder = 99;
 					GameHandler.instance.players [player].pointScore--;
 				}

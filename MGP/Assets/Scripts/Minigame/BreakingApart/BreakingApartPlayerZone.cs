@@ -21,9 +21,12 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 	[HideInInspector] public bool finished = false;
 
 	public void SetStrings(){
+		round1S = new List<string>();
+		round2S = new List<string>();
+		round3S = new List<string>();
 		//Set first round order: 5 buttons
 		//First add (x) amount of button "A", then the rest will be button "Y".
-		int amountS = Random.Range(1,5);
+		int amountS = Random.Range(1,4);
 		for (int i = 0; i < amountS; i++) {
 			round1S.Add ("a");
 		}
@@ -35,7 +38,7 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 
 		//Set second round order: 7 buttons
 		//First add (x) amount of buttons "A", leaving room for at least 1 of each other button.
-		amountS = Random.Range(1,6);
+		amountS = Random.Range(1,4);
 		for (int i = 0; i < amountS; i++) {
 			round2S.Add ("a");
 		}
@@ -52,7 +55,7 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 
 		//Set third round order: 7 buttons
 		//Same as round 2 but now we need to compensate for a fourth button.
-		amountS = Random.Range(1,5);
+		amountS = Random.Range(1,4);
 		for (int i = 0; i < amountS; i++) {
 			round3S.Add ("a");
 		}
@@ -62,12 +65,12 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 			round3S.Add ("y");
 		}
 		//Add amount of "B", leaving room for "X".
-		amountS = Random.Range (1, (7 - (round3S.Count+1)));
+			amountS = Random.Range (1, (7 -(round3S.Count+1)));
 		for (int i = 0; i < amountS; i++) {
 			round3S.Add ("b");
 		}
 		//Rest is added as "X".
-		amountS = 7-round2S.Count;
+		amountS = 7-round3S.Count;
 		for (int i = 0; i < amountS; i++) {
 			round3S.Add ("x");
 		}
@@ -163,6 +166,8 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 		}
 		curtain.localPosition = Vector3.zero;
 		for (int i = 0; i < buttons.Count; i++) {
+			buttons [i].buttonRight.gameObject.SetActive (false);
+			buttons [i].buttonWrong.gameObject.SetActive (false);
 			buttons [i].buttonImage.color = new Color (buttons [i].buttonImage.color.r, buttons [i].buttonImage.color.g, buttons [i].buttonImage.color.b, 0);
 			buttons [i].buttonText.color = new Color (buttons [i].buttonText.color.r, buttons [i].buttonText.color.g, buttons [i].buttonText.color.b, 0);
 		}
@@ -210,14 +215,14 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 
 	public void ButtonPressed(bool correct){
 		if (correct) {
-			StartCoroutine (ShowCorrect (buttons [currentOrder].buttonRight.gameObject));
+			buttons [currentOrder].buttonRight.gameObject.SetActive (true);
 			currentOrder++;
 			if (currentOrder >= currentRound.Count) {
 				StartCoroutine ("SplitLog");
 				finished = true;
 			}
 		} else {
-			StartCoroutine (ShowCorrect (buttons [currentOrder].buttonWrong.gameObject));
+			buttons [currentOrder].buttonWrong.gameObject.SetActive (true);
 		}
 	}
 
