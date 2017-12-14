@@ -141,6 +141,8 @@ public class BreakingApartPlayerZone : MonoBehaviour {
 			}
 			buttons [i].buttonImage.color = new Color (buttons [i].buttonImage.color.r, buttons [i].buttonImage.color.g, buttons [i].buttonImage.color.b, 1);
 			buttons [i].buttonText.color = new Color (buttons [i].buttonText.color.r, buttons [i].buttonText.color.g, buttons [i].buttonText.color.b, 1);
+			if (i == 0)
+				mGame.roundInProgress = true;
 		}
 	}
 

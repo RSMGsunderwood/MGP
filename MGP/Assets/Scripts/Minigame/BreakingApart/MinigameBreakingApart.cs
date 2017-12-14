@@ -7,7 +7,7 @@ public class MinigameBreakingApart : MinigameMain {
 	public Color rCol, bCol, yCol, gCol;
 	public List<BreakingApartPlayerZone> playerZones;
 	public List<GameObject> playerLabels;
-	bool roundInProgress = false;
+	public bool roundInProgress = false;
 
 	void Awake(){
 		for (int i = 0; i < 4; i++) {
@@ -37,7 +37,6 @@ public class MinigameBreakingApart : MinigameMain {
 			if(z.gameObject.activeInHierarchy)
 				z.StartCoroutine(z.StartRound());
 		}
-		roundInProgress = true;
 		yield return new WaitForSeconds (5f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
@@ -55,7 +54,6 @@ public class MinigameBreakingApart : MinigameMain {
 			if(z.gameObject.activeInHierarchy)
 				z.StartCoroutine(z.StartRound());
 		}
-		roundInProgress = true;
 		yield return new WaitForSeconds (7f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
@@ -73,7 +71,6 @@ public class MinigameBreakingApart : MinigameMain {
 			if(z.gameObject.activeInHierarchy)
 				z.StartCoroutine(z.StartRound());
 		}
-		roundInProgress = true;
 		yield return new WaitForSeconds (6f);
 		roundInProgress = false;
 		foreach (BreakingApartPlayerZone z in playerZones) {
@@ -82,6 +79,7 @@ public class MinigameBreakingApart : MinigameMain {
 		}
 		#endregion
 		yield return new WaitForSeconds (2f);
+		GameHandler.instance.CalculateWinner ();
 		ScreenHandler.instance.CreateScreen ("resultsscreen", true);
 	}
 
