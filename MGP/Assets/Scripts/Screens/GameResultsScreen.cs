@@ -9,6 +9,7 @@ public class GameResultsScreen : BaseScreen {
 	public TextMeshProUGUI titleText;				//Reference to title text
 	public List<GameObject> playerResults;			//Reference to player result holders
 	public List<TextMeshProUGUI> playerScores;		//Reference to player score texts
+	public List<TextMeshProUGUI> playerTimeTitles;
 	public List<TextMeshProUGUI> playerTimes;		//Reference to player time texts
 	public TextMeshProUGUI greenBText;				//Reference to green button text
 	public TextMeshProUGUI winningPlayer;			//Reference to winning player texts
@@ -92,8 +93,13 @@ public class GameResultsScreen : BaseScreen {
 		titleText.text = "Results:";
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
-				playerScores [i].text = GameHandler.instance.players [i].pointScore.ToString();
-				playerTimes [i].text = GameHandler.instance.players [i].timeScore.ToString("F2");
+				playerScores [i].text = GameHandler.instance.players [i].pointScore.ToString ();
+				if (GameHandler.instance.chosenGame.usesTimer) {
+					playerTimes [i].text = GameHandler.instance.players [i].timeScore.ToString ("F2");
+				} else {
+					playerTimeTitles [i].gameObject.SetActive (false);
+					playerTimes [i].gameObject.SetActive (false);
+				}
 				playerResults [i].SetActive (true);
 				yield return new WaitForSeconds (1.0f);
 			}
@@ -108,7 +114,12 @@ public class GameResultsScreen : BaseScreen {
 		for (int i = 0; i < 4; i++) {
 			if (GameHandler.instance.players [i].isPlaying) {
 				playerScores [i].text = GameHandler.instance.players [i].pointScore.ToString ();
-				playerTimes [i].text = GameHandler.instance.players [i].timeScore.ToString ("F2");
+				if (GameHandler.instance.chosenGame.usesTimer) {
+					playerTimes [i].text = GameHandler.instance.players [i].timeScore.ToString ("F2");
+				} else {
+					playerTimeTitles [i].gameObject.SetActive (false);
+					playerTimes [i].gameObject.SetActive (false);
+				}
 				playerResults [i].SetActive (true);
 			}
 		}
